@@ -5,7 +5,6 @@ import UserData from "./userType.ts";
 
 export async function createUser(userData: UserData): Promise<any> {
     try {
-        // Connect to the MongoDB database
         await mongoose.connect(process.env.MONGODB_URL!); // Use non-null assertion if you're sure it's defined
 
         // Create a new User instance
