@@ -4,4 +4,6 @@ dotenv.config();
 
 const connectionString = process.env.MONGO_URL;
 
-connectDB(connectionString);
+connectDB(connectionString).then(r => {
+    console.log("Connected to MongoDB");
+});
