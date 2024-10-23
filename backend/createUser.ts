@@ -17,8 +17,5 @@ export async function createUser(userData: UserData): Promise<any> {
     } catch (error) {
         console.error("Error creating user:", error);
         throw error;  // re-throw the error to handle it at a higher level if needed
-    } finally {
-        // Disconnect from the database after the operation is complete
-        await mongoose.disconnect();
     }
 }

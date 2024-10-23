@@ -17,8 +17,5 @@ export async function updateUser(username: string, updateData : UpdateUserData):
     } catch (error) {
         console.error("Error updating user:", error);
         throw error;
-    } finally {
-        // Optionally disconnect from mongoose if this is the last operation
-        await mongoose.disconnect();
     }
 }
