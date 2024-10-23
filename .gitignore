@@ -1,1 +1,15 @@
-/backend/.env
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Optional: Ignore OS and editor-specific files
+.DS_Store
+.idea/
+.vscode/
