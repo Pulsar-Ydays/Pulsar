@@ -2,8 +2,8 @@ import { connectDB } from "./connect_db.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const connectionString = process.env.MANGO_URL;
+const connectionString = process.env.MONGO_URL;
 
 connectDB(connectionString).then(r => {
-    console.log("Connected to MongoDB");
+    console.log(r);
 });
