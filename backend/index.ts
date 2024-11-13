@@ -1,13 +1,12 @@
 import dotenv from "dotenv";
-import {createUser} from "./createUser.ts";
-import {deleteUser} from "./deleteUser.ts";
-import {updateUser} from "./updateUser.ts";
+import {createUser} from "./createUser";
+import {deleteUser} from "./deleteUser";
+import {updateUser} from "./updateUser";
 import express, { Request, Response } from 'express';
-import './userType.ts'
-import UserData from "./userType.ts";
-import {connectDB} from "./connect_db.ts";
+import UserData from "./userType";
+import {connectDB} from "./connect_db";
 dotenv.config();
-import {getAllUsers} from "./getUser.ts";
+import {getAllUsers} from "./getUser";
 
 connectDB(process.env.MONGODB_URL!).then();
 const app = express();

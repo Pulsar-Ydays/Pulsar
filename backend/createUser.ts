@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import User from './model/userModel'; // Assuming your model is still in JavaScript
-import UserData from "./userType.ts";
+import UserData from "./userType";
 
 
 export async function createUser(userData: UserData): Promise<any> {

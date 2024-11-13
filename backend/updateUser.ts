@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import User from './model/userModel'; // Assuming your model is still in JavaScript
-import UpdateUserData from "./updateUserType.ts";
+import UpdateUserData from "./updateUserType";
 
 // Function to update user email based on username
 export async function updateUser(username: string, updateData : UpdateUserData): Promise<void> {
