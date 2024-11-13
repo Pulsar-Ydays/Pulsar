@@ -1,7 +1,7 @@
-import UserData from "./userType";
-import User from "./model/userModel";
+import UserData from "../userType";
+import User from "../model/userModel";
 
-export async function getAllUsers(): Promise<any> {
+export async function getAllUsers(): Promise<UserData[]> {
     try {
         const allUser  = await User.find().exec(); // Attente de la promesse
         if (!allUser || allUser.length === 0) {

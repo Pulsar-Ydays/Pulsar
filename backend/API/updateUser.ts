@@ -1,10 +1,10 @@
-import User from './model/userModel'; // Assuming your model is still in JavaScript
-import UserData from "./userType";
+import User from '../model/userModel'; // Assuming your model is still in JavaScript
+import UserUpdateData from "../userType";
 import { ObjectId } from 'mongodb';
-import userSchema from "./schema/userSchema";
+import userSchema from "../schema/userSchema";
 
 // Function to update user email based on username
-export async function updateUser(id: string, updateData : UserData): Promise<any> {
+export async function updateUser(id: string, updateData : UserUpdateData): Promise<UserUpdateData | null> {
     try {
         const query = { _id: new ObjectId(id) };
         // Update the user's email

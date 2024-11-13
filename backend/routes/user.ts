@@ -1,8 +1,11 @@
 import {Request, Response, Router} from 'express';
-import {createUser} from "../createUser";
-import {getAllUsers} from "../getUser";
-import {updateUser} from "../updateUser";
+import {createUser} from "../API/createUser";
+import {getAllUsers} from "../getAllUser";
+import {updateUser} from "../API/updateUser";
 import userSchema from "../schema/userSchema";
+import {deleteUser} from "../API/deleteUser";
+import UserData from "../userType";
+import mongoose from "mongoose";
 
 
 const router = Router();
@@ -25,7 +28,7 @@ router.post('/api/users', async (req: Request, res: Response) => {
     }
 });
 
-router.patch('/api/users/:id', async (req: Request, res: Response) => {
+router.patch('/api/users/:id', async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
     try {
         const { username, password, email } = req.body;
         if (username && username.length < 3) {
@@ -48,6 +51,27 @@ router.patch('/api/users/:id', async (req: Request, res: Response) => {
         res.status(500).json({ message: error.message })
     }
 })
+
+router.delete('/api/users/:id', async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
+    try {
+        // Assurez-vous que l'ID est une chaîne
+        const userId: string = req.params.id;
+
+        // Vérification de la validité de l'ID
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid user ID" });
+        }
+
+        const user = await deleteUser(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ message: "User successfully deleted", user });
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 
 

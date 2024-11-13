@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
-import {createUser} from "./createUser";
-import {deleteUser} from "./deleteUser";
-import {updateUser} from "./updateUser";
+import {createUser} from "./API/createUser";
+import {deleteUser} from "./API/deleteUser";
+import {updateUser} from "./API/updateUser";
 import express, { Request, Response } from 'express';
 import UserData from "./userType";
 import {connectDB} from "./connect_db";
