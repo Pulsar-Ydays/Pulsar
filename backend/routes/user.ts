@@ -1,11 +1,12 @@
 import {Request, Response, Router} from 'express';
 import {createUser} from "../API/createUser";
-import {getAllUsers} from "../getAllUser";
+import {getAllUsers} from "../API/getAllUser";
 import {updateUser} from "../API/updateUser";
 import userSchema from "../schema/userSchema";
 import {deleteUser} from "../API/deleteUser";
 import UserData from "../userType";
 import mongoose from "mongoose";
+import {getUser} from "../API/getUser";
 
 
 const router = Router();
@@ -16,6 +17,19 @@ router.get('/api/users', async (req: Request, res: Response) => {
         res.status(200).json(users); // Envoie les utilisateurs dans la réponse HTTP sous forme de JSON
     } catch (error : any) {
         res.status(500).json({ message: error.message }); // Gère les erreurs
+    }
+});
+
+router.get('/api/users/:id', async (req: Request, res: Response): Promise<any | Record<string, any>> => {
+    try {
+        const user = await getUser(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+
+    } catch (error : any) {
+        res.status(500).json({ message: error.message });
     }
 });
 
