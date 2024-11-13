@@ -10,8 +10,5 @@ export async function deleteUser(username: string): Promise<void> {
     } catch(error) {
         console.error("Error deleting user:", error);
         throw error;
-
-    } finally {
-        await mongoose.disconnect();
     }
 }
