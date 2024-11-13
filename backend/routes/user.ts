@@ -89,4 +89,15 @@ router.delete('/api/users/:id', async (req: Request, res: Response) : Promise<an
 
 
 
+router.post('/login', async (req, res) => {
+    const {username, password} = req.body;
+    if (username === 'admin' && password === 'admin') {
+        res.status(200).json({message: "Login successful"});
+    } else {
+        res.status(401).json({message: "Login failed"});
+    }
+});
+
+
+
 export default router;
