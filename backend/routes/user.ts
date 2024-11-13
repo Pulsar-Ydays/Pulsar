@@ -1,6 +1,7 @@
 import {Request, Response, Router} from 'express';
 import {createUser} from "../createUser";
 import {getAllUsers} from "../getUser";
+import {updateUser} from "../updateUser";
 
 
 const router = Router();
@@ -22,5 +23,15 @@ router.post('/api/users', async (req: Request, res: Response) => {
         res.status(500).json({ message: error.message });
     }
 });
+
+router.patch('/api/users/:id', async (req: Request, res: Response) => {
+    try {
+        const user = await updateUser(req.params.id, req.body);
+        res.status(204).json(user);
+    }
+    catch (error : any) {
+        res.status(500).json({ message: error.message })
+    }
+})
 
 export default router;
