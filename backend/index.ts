@@ -15,9 +15,9 @@ const sampleUser : UserData = {
 };
 
 const sampleUsername = "johndoe";
-const samplePassword = {password: "password553"};
+const samplePassword = {password: "password553", email: "dede@example.com"};
 
-createUser(sampleUser);
+//createUser(sampleUser);
 //deleteUser(sampleUsername);
-//pdateUser("johndoe", samplePassword);
+updateUser("johndoe", samplePassword);
 
