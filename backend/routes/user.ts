@@ -1,6 +1,6 @@
 import {Request, Response, Router} from 'express';
 import {createUser} from "../API/createUser";
-import {getAllUsers} from "../getAllUser";
+import {getAllUsers} from "../API/getAllUser";
 import {updateUser} from "../API/updateUser";
 import userSchema from "../schema/userSchema";
 import {deleteUser} from "../API/deleteUser";

@@ -18,8 +18,11 @@
     "nodemon": "^3.1.7"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.0",
+    "install": "^0.13.0",
+    "npm": "^10.9.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.3"
   }

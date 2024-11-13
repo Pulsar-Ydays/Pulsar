@@ -1,12 +1,7 @@
 import dotenv from "dotenv";
-import {createUser} from "./API/createUser";
-import {deleteUser} from "./API/deleteUser";
-import {updateUser} from "./API/updateUser";
 import express, { Request, Response } from 'express';
-import UserData from "./userType";
 import {connectDB} from "./connect_db";
 dotenv.config();
-import {getAllUsers} from "./getUser";
 import router from "./routes/user";
 
 connectDB(process.env.MONGODB_URL!).then();
