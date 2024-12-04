@@ -7,6 +7,7 @@ import routerUser from "./routes/user";
 
 connectDB(process.env.MONGODB_URL!).then();
 const app = express();
+
 app.use(express.json());
 app.use(routerUser);
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
