@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import express, { Request, Response } from 'express';
 import {connectDB} from "./connect_db";
 import express from 'express';
 dotenv.config();
