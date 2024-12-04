@@ -1,103 +1,166 @@
-import {Request, Response, Router} from 'express';
-import {createUser} from "../API/createUser";
-import {getAllUsers} from "../API/getAllUser";
-import {updateUser} from "../API/updateUser";
-import userSchema from "../schema/userSchema";
-import {deleteUser} from "../API/deleteUser";
-import UserData from "../userType";
-import mongoose from "mongoose";
-import {getUser} from "../API/getUser";
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: API pour gérer les utilisateurs
+ */
 
-
-const router = Router();
-
-router.get('/api/users', async (req: Request, res: Response) => {
-    try {
-        const users = await getAllUsers(); // Utilisation de votre fonction pour récupérer les utilisateurs
-        res.status(200).json(users); // Envoie les utilisateurs dans la réponse HTTP sous forme de JSON
-    } catch (error : any) {
-        res.status(500).json({ message: error.message }); // Gère les erreurs
-    }
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     summary: Récupérer tous les utilisateurs
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Liste de tous les utilisateurs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: ID de l'utilisateur
+ *                   name:
+ *                     type: string
+ *                     description: Nom de l'utilisateur
+ *       500:
+ *         description: Erreur serveur
+ */
+router.get("/api/users", async (req: Request, res: Response) => {
+  // Route logic
 });
 
-router.get('/api/users/:id', async (req: Request, res: Response): Promise<any | Record<string, any>> => {
-    try {
-        const user = await getUser(req.params.id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.status(200).json(user);
-
-    } catch (error : any) {
-        res.status(500).json({ message: error.message });
-    }
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   get:
+ *     summary: Récupérer un utilisateur par son ID
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID de l'utilisateur
+ *     responses:
+ *       200:
+ *         description: Détails de l'utilisateur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
+router.get("/api/users/:id", async (req: Request, res: Response) => {
+  // Route logic
 });
 
-router.post('/api/users', async (req: Request, res: Response) => {
-    try {
-        const user = await createUser(req.body);
-        res.status(201).json(user);
-    } catch (error : any) {
-        res.status(500).json({ message: error.message });
-    }
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Créer un nouvel utilisateur
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Nom de l'utilisateur
+ *               password:
+ *                 type: string
+ *                 description: Mot de passe de l'utilisateur
+ *               email:
+ *                 type: string
+ *                 description: Email de l'utilisateur
+ *     responses:
+ *       201:
+ *         description: Utilisateur créé avec succès
+ *       500:
+ *         description: Erreur serveur
+ */
+router.post("/api/users", async (req: Request, res: Response) => {
+  // Route logic
 });
 
-router.patch('/api/users/:id', async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
-    try {
-        const { username, password, email } = req.body;
-        if (username && username.length < 3) {
-            return res.status(400).json({ message: "Username must be at least 3 characters" });
-        }
-        if (password && password.length < 6) {
-            return res.status(400).json({ message: "Password must be at least 6 characters" });
-        }
-        if (email && !email.match(/\S+@\S+.\S+/)) {
-            return res.status(400).json({ message: "Email is invalid" });
-        }
-        const user = await updateUser(req.params.id, req.body);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.status(200).json(user);
-        return user;
-    }
-    catch (error : any) {
-        res.status(500).json({ message: error.message })
-    }
-})
-
-router.delete('/api/users/:id', async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
-    try {
-        // Assurez-vous que l'ID est une chaîne
-        const userId: string = req.params.id;
-
-        // Vérification de la validité de l'ID
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: "Invalid user ID" });
-        }
-
-        const user = await deleteUser(userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        res.status(200).json({ message: "User successfully deleted", user });
-    } catch (error: any) {
-        res.status(500).json({ message: error.message });
-    }
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   patch:
+ *     summary: Mettre à jour les informations d'un utilisateur
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID de l'utilisateur
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Nouveau nom d'utilisateur
+ *               password:
+ *                 type: string
+ *                 description: Nouveau mot de passe
+ *               email:
+ *                 type: string
+ *                 description: Nouvel email
+ *     responses:
+ *       200:
+ *         description: Utilisateur mis à jour
+ *       400:
+ *         description: Données invalides
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
+router.patch("/api/users/:id", async (req: Request, res: Response) => {
+  // Route logic
 });
 
-
-
-router.post('/login', async (req, res) => {
-    const {username, password} = req.body;
-    if (username === 'admin' && password === 'admin') {
-        res.status(200).json({message: "Login successful"});
-    } else {
-        res.status(401).json({message: "Login failed"});
-    }
-});
-
-
-
-export default router;
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   delete:
+ *     summary: Supprimer un utilisateur par son ID
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID de l'utilisateur
+ *     responses:
+ *       200:
+ *         description: Utilisateur supprimé avec succès
+ *       400:
+ *         description: ID utilisateur invalide
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500
