@@ -3,13 +3,11 @@ import {connectDB} from "./connect_db";
 import express from 'express';
 dotenv.config();
 import routerUser from "./routes/user";
-import swagger
 
 
 connectDB(process.env.MONGODB_URL!).then();
 const app = express();
 app.use(express.json());
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(routerUser);
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(err.stack);
