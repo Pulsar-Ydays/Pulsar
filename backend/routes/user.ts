@@ -10,7 +10,34 @@ import {getUser} from "../API/getUser";
 
 
 const router = Router();
-
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     summary: Récupère tous les utilisateurs
+ *     description: Cette route permet de récupérer la liste complète des utilisateurs.
+ *     responses:
+ *       200:
+ *         description: Liste des utilisateurs récupérée avec succès.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: ID de l'utilisateur
+ *                   username:
+ *                     type: string
+ *                     description: Nom d'utilisateur
+ *                   email:
+ *                     type: string
+ *                     description: Adresse email
+ *       500:
+ *         description: Erreur serveur.
+ */
 router.get('/api/users', async (req: Request, res: Response) => {
     try {
         const users = await getAllUsers(); // Utilisation de votre fonction pour récupérer les utilisateurs
@@ -20,6 +47,41 @@ router.get('/api/users', async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   get:
+ *     summary: Récupère un utilisateur par ID
+ *     description: Cette route permet de récupérer un utilisateur spécifique en utilisant son ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de l'utilisateur.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Utilisateur trouvé.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: ID de l'utilisateur
+ *                 username:
+ *                   type: string
+ *                   description: Nom d'utilisateur
+ *                 email:
+ *                   type: string
+ *                   description: Adresse email
+ *       404:
+ *         description: Utilisateur non trouvé.
+ *       500:
+ *         description: Erreur serveur.
+ */
 router.get('/api/users/:id', async (req: Request, res: Response): Promise<any | Record<string, any>> => {
     try {
         const user = await getUser(req.params.id);
@@ -33,6 +95,34 @@ router.get('/api/users/:id', async (req: Request, res: Response): Promise<any | 
     }
 });
 
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Crée un nouvel utilisateur
+ *     description: Cette route permet de créer un nouvel utilisateur avec les données fournies.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Nom d'utilisateur
+ *               email:
+ *                 type: string
+ *                 description: Adresse email
+ *               password:
+ *                 type: string
+ *                 description: Mot de passe
+ *     responses:
+ *       201:
+ *         description: Utilisateur créé avec succès.
+ *       500:
+ *         description: Erreur serveur.
+ */
 router.post('/api/users', async (req: Request, res: Response) => {
     try {
         const user = await createUser(req.body);
@@ -42,6 +132,45 @@ router.post('/api/users', async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   patch:
+ *     summary: Met à jour un utilisateur
+ *     description: Met à jour les informations d'un utilisateur existant.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de l'utilisateur.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Nom d'utilisateur (au moins 3 caractères)
+ *               email:
+ *                 type: string
+ *                 description: Adresse email
+ *               password:
+ *                 type: string
+ *                 description: Mot de passe (au moins 6 caractères)
+ *     responses:
+ *       200:
+ *         description: Utilisateur mis à jour avec succès.
+ *       400:
+ *         description: Requête invalide (validation échouée).
+ *       404:
+ *         description: Utilisateur non trouvé.
+ *       500:
+ *         description: Erreur serveur.
+ */
 router.patch('/api/users/:id', async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
     try {
         const { username, password, email } = req.body;
@@ -66,6 +195,29 @@ router.patch('/api/users/:id', async (req: Request, res: Response) : Promise<any
     }
 })
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   delete:
+ *     summary: Supprime un utilisateur
+ *     description: Supprime un utilisateur spécifique en utilisant son ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de l'utilisateur.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Utilisateur supprimé avec succès.
+ *       400:
+ *         description: ID utilisateur invalide.
+ *       404:
+ *         description: Utilisateur non trouvé.
+ *       500:
+ *         description: Erreur serveur.
+ */
 router.delete('/api/users/:id', async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
     try {
         // Assurez-vous que l'ID est une chaîne
@@ -88,7 +240,33 @@ router.delete('/api/users/:id', async (req: Request, res: Response) : Promise<an
 });
 
 
-
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Authentifie un utilisateur
+ *     description: Permet à un utilisateur de se connecter avec un nom d'utilisateur et un mot de passe.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Nom d'utilisateur
+ *               password:
+ *                 type: string
+ *                 description: Mot de passe
+ *     responses:
+ *       200:
+ *         description: Connexion réussie.
+ *       401:
+ *         description: Échec de l'authentification.
+ *       500:
+ *         description: Erreur serveur.
+ */
 router.post('/login', async (req, res) => {
     const {username, password} = req.body;
     if (username === 'admin' && password === 'admin') {
