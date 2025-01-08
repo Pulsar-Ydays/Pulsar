@@ -41,7 +41,7 @@ export default function LoginForm() {
               <FormLabel className="text-gray-300">Email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="examplee@domain.com"
+                  placeholder="example@domain.com"
                   {...field}
                    className="bg-[#2A0140] text-gray-200 border border-transparent focus:border-[#FF4DFF] focus:ring-2 focus:ring-[#FF4DFF] focus:outline-none focus:ring-offset-2 rounded-md transition-all"
                 />
