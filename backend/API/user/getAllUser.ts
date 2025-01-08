@@ -1,5 +1,5 @@
-import UserData from "../userType";
-import User from "../model/userModel";
+import UserData from "../../Type/userType";
+import User from "../../model/userModel";
 
 export async function getAllUsers(): Promise<UserData[]> {
     try {

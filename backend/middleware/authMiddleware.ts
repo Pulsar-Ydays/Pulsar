@@ -17,7 +17,7 @@ export const verifyToken: RequestHandler = (req: CustomRequest, res: Response, n
     try {
         const decoded = jwt.verify(token, 'your-secret-key') as { userId: string };
         req.userId = decoded.userId;
-        next(); // Appelle le prochain middleware ou la route
+        next();
     } catch (error) {
         res.status(401).json({ error: 'Invalid token' });
     }

@@ -1,5 +1,5 @@
-import UserData from "../userType";
-import User from "../model/userModel";
+import UserData from "../../Type/userType";
+import User from "../../model/userModel";
 import { ObjectId } from "mongodb";
 
 export async function getUser(id: string): Promise<UserData> {

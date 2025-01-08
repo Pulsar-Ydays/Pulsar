@@ -1,10 +1,10 @@
 import {Request, Response, Router} from 'express';
-import {createUser} from "../API/createUser";
-import {getAllUsers} from "../API/getAllUser";
-import {updateUser} from "../API/updateUser";
-import {deleteUser} from "../API/deleteUser";
+import {createUser} from "../API/user/createUser";
+import {getAllUsers} from "../API/user/getAllUser";
+import {updateUser} from "../API/user/updateUser";
+import {deleteUser} from "../API/user/deleteUser";
 import mongoose from "mongoose";
-import {getUser} from "../API/getUser";
+import {getUser} from "../API/user/getUser";
 import bcrypt from "bcrypt";
 import User from "../model/userModel"
 import jwt from "jsonwebtoken";
@@ -83,7 +83,7 @@ router.get('/api/users', verifyToken, async (req: Request, res: Response) => {
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/api/users/:id', async (req: Request, res: Response): Promise<any | Record<string, any>> => {
+router.get('/api/users/:id',  verifyToken, async (req: Request, res: Response): Promise<any | Record<string, any>> => {
     try {
         const user = await getUser(req.params.id);
         if (!user) {
@@ -124,7 +124,7 @@ router.get('/api/users/:id', async (req: Request, res: Response): Promise<any | 
  *       500:
  *         description: Erreur serveur.
  */
-router.post('/api/users', async (req: Request, res: Response) => {
+router.post('/api/users', verifyToken,  async (req: Request, res: Response) => {
     try {
         const user = await createUser(req.body);
         res.status(201).json(user);
@@ -172,7 +172,7 @@ router.post('/api/users', async (req: Request, res: Response) => {
  *       500:
  *         description: Erreur serveur.
  */
-router.patch('/api/users/:id', async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
+router.patch('/api/users/:id',verifyToken,  async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
     try {
         const { username, password, email } = req.body;
         if (username && username.length < 3) {
@@ -219,7 +219,7 @@ router.patch('/api/users/:id', async (req: Request, res: Response) : Promise<any
  *       500:
  *         description: Erreur serveur.
  */
-router.delete('/api/users/:id', async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
+router.delete('/api/users/:id', verifyToken,  async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
     try {
         // Assurez-vous que l'ID est une chaîne
         const userId: string = req.params.id;

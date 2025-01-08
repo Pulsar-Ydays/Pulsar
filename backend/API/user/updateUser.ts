@@ -1,7 +1,7 @@
-import User from '../model/userModel'; // Assuming your model is still in JavaScript
-import UserUpdateData from "../userType";
+import User from '../../model/userModel'; // Assuming your model is still in JavaScript
+import UserUpdateData from "../../Type/userType";
 import { ObjectId } from 'mongodb';
-import userSchema from "../schema/userSchema";
+import userSchema from "../../schema/userSchema";
 
 // Function to update user email based on username
 export async function updateUser(id: string, updateData : UserUpdateData): Promise<UserUpdateData | null> {
