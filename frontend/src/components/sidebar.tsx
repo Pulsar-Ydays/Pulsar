@@ -1,27 +1,26 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   LayoutDashboard,
   Wallet,
-  ArrowLeftRight,
   CoinsIcon,
-  Boxes,
-  Database,
+  Activity,
+  Calculator,
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 const sidebarItems = [
+  { name: "Profil", icon: User, href: "/Register" },
   { name: "Overview", icon: LayoutDashboard, href: "/" },
   { name: "Wallet", icon: Wallet, href: "/wallet" },
-  { name: "Transaction", icon: ArrowLeftRight, href: "/transaction" },
   { name: "Swap", icon: CoinsIcon, href: "/swap" },
-  { name: "Staking", icon: Boxes, href: "/staking" },
-  { name: "Soon", icon: Database, href: "/soon" },
+  { name: "Cryptos", icon: Activity, href: "/cryptos" },
+  { name: "Calculator", icon: Calculator, href: "/calculator" },
 ];
 
 export function Sidebar() {
