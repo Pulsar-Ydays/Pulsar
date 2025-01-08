@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
+
 import { Sidebar } from "@/components/sidebar";
 import { CryptoCard } from "@/components/crypto-card";
 import { StatsCard } from "@/components/stats-card";
 import { Button } from "@/components/ui/button";
+import TransactionInput from "@/components/TransactionInput";
 
 import { Bitcoin, Clock } from "lucide-react"; //add ethereum
 
@@ -18,6 +21,11 @@ const mockChartData = [
 ];
 
 export default function Home() {
+  //Gestion Modal "ajouter crypto"
+  const [isModalOpen, setModalOpen] = useState(false);
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
   return (
     <div className="flex h-screen bg-background">
       <Sidebar />
@@ -64,7 +72,14 @@ export default function Home() {
             </p>
             <Button>Learn More</Button>
           </div>
-
+          <div className="add">
+            <button
+              className=" bg-[#FF4DFF] text-white py-2 px-4 rounded-md hover:bg-[#D900FF] transition"
+              onClick={openModal}
+            >
+              Ajouter ma crypto
+            </button>
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <StatsCard
               title="User Growth"
@@ -81,7 +96,20 @@ export default function Home() {
           </div>
         </div>
       </main>
-
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-[#1A1A1D] p-6 rounded-lg max-w-md w-full">
+            <button
+              onClick={closeModal}
+              className=" text-white-200 hover:text-white"
+            >
+              X
+            </button>
+            <TransactionInput />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
