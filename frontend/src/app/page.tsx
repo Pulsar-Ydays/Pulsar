@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/sidebar";
 import { CryptoCard } from "@/components/crypto-card";
 import { StatsCard } from "@/components/stats-card";
 import { Button } from "@/components/ui/button";
+
 import { Bitcoin, Clock } from "lucide-react"; //add ethereum
 
 const mockChartData = [
@@ -80,6 +81,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+
     </div>
   );
 }
