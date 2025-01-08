@@ -2,12 +2,13 @@ import {Request, Response, Router} from 'express';
 import {createUser} from "../API/createUser";
 import {getAllUsers} from "../API/getAllUser";
 import {updateUser} from "../API/updateUser";
-import userSchema from "../schema/userSchema";
 import {deleteUser} from "../API/deleteUser";
-import UserData from "../userType";
 import mongoose from "mongoose";
 import {getUser} from "../API/getUser";
-
+import bcrypt from "bcrypt";
+import User from "../model/userModel"
+import jwt from "jsonwebtoken";
+import {verifyToken} from "../middleware/authMiddleware";
 
 const router = Router();
 /**
@@ -38,7 +39,7 @@ const router = Router();
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/api/users', async (req: Request, res: Response) => {
+router.get('/api/users', verifyToken, async (req: Request, res: Response) => {
     try {
         const users = await getAllUsers(); // Utilisation de votre fonction pour récupérer les utilisateurs
         res.status(200).json(users); // Envoie les utilisateurs dans la réponse HTTP sous forme de JSON
@@ -267,14 +268,26 @@ router.delete('/api/users/:id', async (req: Request, res: Response) : Promise<an
  *       500:
  *         description: Erreur serveur.
  */
-router.post('/login', async (req, res) => {
-    const {username, password} = req.body;
-    if (username === 'admin' && password === 'admin') {
-        res.status(200).json({message: "Login successful"});
-    } else {
-        res.status(401).json({message: "Login failed"});
+router.post('/login', async (req: Request, res: Response) : Promise<any>  => {
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(401).json({ error: 'Authentication failed' });
+        }
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Authentication failed' });
+        }
+        const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
+            expiresIn: '1h',
+        });
+        res.status(200).json({ token });
+    } catch (error) {
+        res.status(500).json({ error: 'Login failed' });
     }
 });
+
 
 
 
