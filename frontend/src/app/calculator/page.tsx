@@ -22,7 +22,7 @@ export default function Calculator() {
 
       {/* Main content */}
       <main className="flex-1 overflow-y-auto p-6 flex flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold mb-6 text-center">
+        <h1 className="font-mono text-3xl font-bold mb-6 text-center">
           Calculez vos taxes sur les cryptos
         </h1>
 
@@ -33,13 +33,13 @@ export default function Calculator() {
             value={gain}
             onChange={(e) => setGain(Number(e.target.value) || "")}
             placeholder="Entrez vos gains"
-            className="w-full p-3 rounded-md bg-gray-800 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-purple-600 focus:outline-none"
+            className="font-mono w-full p-3 rounded-md bg-gray-800 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-purple-600 focus:outline-none"
           />
 
           {/* Bouton de calcul */}
           <button
             onClick={calculateTax}
-            className="w-full p-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white font-bold transition-all"
+            className="w-full p-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white font-mono transition-all"
           >
             Calculer !
           </button>

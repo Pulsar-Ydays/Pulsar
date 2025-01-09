@@ -13,7 +13,7 @@ const UserStatus = () => {
   }, []);
   return (
     <div className="flex items-center gap-2 bg-secondary rounded-full px-4 py-2">
-      <span className="text-sm">
+      <span className="font-mono text-xl">
         {isLoggedIn ? userName : 'Se connecter'}
       </span>
     </div>

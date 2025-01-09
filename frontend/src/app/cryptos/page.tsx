@@ -72,13 +72,13 @@ export default function Cryptos() {
 
       {/* Main content */}
       <main className="flex-1 overflow-y-auto p-6">
-        <h1 className="text-3xl font-bold mb-6">Cryptos</h1>
+        <h1 className="font-mono text-3xl font-bold mb-6">Cryptos</h1>
 
         {/* Input pour sélectionner une crypto */}
         <div className="mb-8">
           <label
             htmlFor="crypto-select"
-            className="block text-lg font-semibold mb-2"
+            className="font-mono block text-lg font-semibold mb-2"
           >
             Select a Cryptocurrency
           </label>
@@ -110,7 +110,7 @@ export default function Cryptos() {
             />
           </div>
         ) : (
-          <div className="text-center text-gray-400">
+          <div className="font-mono text-center text-gray-400">
             <p>Please select a cryptocurrency to view its chart.</p>
           </div>
         )}

@@ -9,7 +9,7 @@ type WalletValueProps = {
 const WalletValue: React.FC<WalletValueProps> = ({ totalValue, percentageChange, isPositive }) => {
   return (
     <section className="mb-8">
-        <h2 className="text-base sm:text-lg font-medium text-gray-400 mb-2 text-center sm:text-left">
+        <h2 className="font-mono text-base sm:text-lg font-medium text-gray-400 mb-2 text-center sm:text-left">
             Wallet Value
         </h2>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
