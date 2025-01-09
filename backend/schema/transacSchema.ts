@@ -26,6 +26,10 @@ const transacSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    walletId: {
+        type: String,
+        required: true
+    }
 }, { timestamps: true });
 
 export default transacSchema;
