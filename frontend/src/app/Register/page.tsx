@@ -61,8 +61,8 @@ export default function SlidingForm() {
               width={100}
               height={100}
             />
-            <h1 className="text-4xl font-extrabold text-white shadow-lg">Welcome Back!</h1>
-            <p className="mt-4 mb-6 text-gray-200">
+            <h1 className="font-mono text-4xl font-extrabold text-white shadow-lg">Welcome Back!</h1>
+            <p className="font-mono mt-4 mb-6 text-gray-200">
               To keep connected with us, please log in with your personal info.
             </p>
             <button
@@ -80,8 +80,8 @@ export default function SlidingForm() {
               width={100}
               height={100}
             />
-            <h1 className="text-4xl font-extrabold text-white shadow-lg">Hello, Explorer!</h1>
-            <p className="mt-4 mb-6 text-gray-200">
+            <h1 className="font-mono text-4xl font-extrabold text-white shadow-lg">Hello, Explorer!</h1>
+            <p className="font-mono mt-4 mb-6 text-gray-200">
               Enter your personal details and start your journey with us.
             </p>
             <button

@@ -71,7 +71,7 @@ export function Sidebar() {
             height={50}
             className="rounded-full"
           />
-          <span className="font-semibold text-xl text-white">Pulsar</span>
+          <span className="font-mono text-xl text-white">Pulsar</span>
         </div>
         <ScrollArea className="h-full w-full">
           <div className="space-y-1 p-4">
