@@ -4,6 +4,14 @@ import { Express } from 'express';
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ * security:
+ *   - bearerAuth: []
  * tags:
  *   - name: Transactions
  *     description: Gestion des transactions
@@ -16,13 +24,27 @@ const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API Utilisateurs',
+      title: 'API Pulsar',
       version: '1.0.0',
-      description: 'Une API pour gérer les utilisateurs',
+      description: 'Une API pour notre application Pulsar',
     },
     servers: [
       {
         url: 'http://localhost:3000', // Mets à jour avec ton URL
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
       },
     ],
   },
