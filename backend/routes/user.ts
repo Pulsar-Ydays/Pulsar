@@ -1,14 +1,14 @@
-import {Request, Response, Router} from 'express';
-import {createUser} from "../API/user/createUser";
-import {getAllUsers} from "../API/user/getAllUser";
-import {updateUser} from "../API/user/updateUser";
-import {deleteUser} from "../API/user/deleteUser";
+import { Request, Response, Router } from "express";
+import { createUser } from "../API/user/createUser";
+import { getAllUsers } from "../API/user/getAllUser";
+import { updateUser } from "../API/user/updateUser";
+import { deleteUser } from "../API/user/deleteUser";
 import mongoose from "mongoose";
-import {getUser} from "../API/user/getUser";
+import { getUser } from "../API/user/getUser";
 import bcrypt from "bcrypt";
-import User from "../model/userModel"
+import User from "../model/userModel";
 import jwt from "jsonwebtoken";
-import {verifyToken} from "../middleware/authMiddleware";
+import { verifyToken } from "../middleware/authMiddleware";
 
 const router = Router();
 /**
@@ -39,13 +39,13 @@ const router = Router();
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/api/users', verifyToken, async (req: Request, res: Response) => {
-    try {
-        const users = await getAllUsers(); // Utilisation de votre fonction pour récupérer les utilisateurs
-        res.status(200).json(users); // Envoie les utilisateurs dans la réponse HTTP sous forme de JSON
-    } catch (error : any) {
-        res.status(500).json({ message: error.message }); // Gère les erreurs
-    }
+router.get("/api/users", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const users = await getAllUsers(); // Utilisation de votre fonction pour récupérer les utilisateurs
+    res.status(200).json(users); // Envoie les utilisateurs dans la réponse HTTP sous forme de JSON
+  } catch (error: any) {
+    res.status(500).json({ message: error.message }); // Gère les erreurs
+  }
 });
 
 /**
@@ -83,18 +83,29 @@ router.get('/api/users', verifyToken, async (req: Request, res: Response) => {
  *       500:
  *         description: Erreur serveur.
  */
-router.get('/api/users/:id',  verifyToken, async (req: Request, res: Response): Promise<any | Record<string, any>> => {
+router.get(
+  "/api/users/:id",
+  verifyToken,
+  async (req: Request, res: Response): Promise<any | Record<string, any>> => {
     try {
-        const user = await getUser(req.params.id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.status(200).json(user);
+      const userId: string = req.params.id;
 
-    } catch (error : any) {
-        res.status(500).json({ message: error.message });
+      //Verification du format de l'ID
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID format" });
+      }
+
+      console.log("Fetching user with ID:", userId);
+      const user = await getUser(req.params.id);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json(user);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
     }
-});
+  }
+);
 
 /**
  * @swagger
@@ -124,13 +135,13 @@ router.get('/api/users/:id',  verifyToken, async (req: Request, res: Response): 
  *       500:
  *         description: Erreur serveur.
  */
-router.post('/api/users', verifyToken,  async (req: Request, res: Response) => {
-    try {
-        const user = await createUser(req.body);
-        res.status(201).json(user);
-    } catch (error : any) {
-        res.status(500).json({ message: error.message });
-    }
+router.post("/api/users", async (req: Request, res: Response) => {
+  try {
+    const user = await createUser(req.body);
+    res.status(201).json(user);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 /**
@@ -172,29 +183,36 @@ router.post('/api/users', verifyToken,  async (req: Request, res: Response) => {
  *       500:
  *         description: Erreur serveur.
  */
-router.patch('/api/users/:id',verifyToken,  async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
+router.patch(
+  "/api/users/:id",
+  verifyToken,
+  async (req: Request, res: Response): Promise<any | Record<string, any>> => {
     try {
-        const { username, password, email } = req.body;
-        if (username && username.length < 3) {
-            return res.status(400).json({ message: "Username must be at least 3 characters" });
-        }
-        if (password && password.length < 6) {
-            return res.status(400).json({ message: "Password must be at least 6 characters" });
-        }
-        if (email && !email.match(/\S+@\S+.\S+/)) {
-            return res.status(400).json({ message: "Email is invalid" });
-        }
-        const user = await updateUser(req.params.id, req.body);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.status(200).json(user);
-        return user;
+      const { username, password, email } = req.body;
+      if (username && username.length < 3) {
+        return res
+          .status(400)
+          .json({ message: "Username must be at least 3 characters" });
+      }
+      if (password && password.length < 6) {
+        return res
+          .status(400)
+          .json({ message: "Password must be at least 6 characters" });
+      }
+      if (email && !email.match(/\S+@\S+.\S+/)) {
+        return res.status(400).json({ message: "Email is invalid" });
+      }
+      const user = await updateUser(req.params.id, req.body);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json(user);
+      return user;
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
     }
-    catch (error : any) {
-        res.status(500).json({ message: error.message })
-    }
-})
+  }
+);
 
 /**
  * @swagger
@@ -219,27 +237,30 @@ router.patch('/api/users/:id',verifyToken,  async (req: Request, res: Response) 
  *       500:
  *         description: Erreur serveur.
  */
-router.delete('/api/users/:id', verifyToken,  async (req: Request, res: Response) : Promise<any | Record<string, any>> => {
+router.delete(
+  "/api/users/:id",
+  verifyToken,
+  async (req: Request, res: Response): Promise<any | Record<string, any>> => {
     try {
-        // Assurez-vous que l'ID est une chaîne
-        const userId: string = req.params.id;
+      // Assurez-vous que l'ID est une chaîne
+      const userId: string = req.params.id;
 
-        // Vérification de la validité de l'ID
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: "Invalid user ID" });
-        }
+      // Vérification de la validité de l'ID
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+      }
 
-        const user = await deleteUser(userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+      const user = await deleteUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
 
-        res.status(200).json({ message: "User successfully deleted", user });
+      res.status(200).json({ message: "User successfully deleted", user });
     } catch (error: any) {
-        res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message });
     }
-});
-
+  }
+);
 
 /**
  * @swagger
@@ -268,27 +289,33 @@ router.delete('/api/users/:id', verifyToken,  async (req: Request, res: Response
  *       500:
  *         description: Erreur serveur.
  */
-router.post('/login', async (req: Request, res: Response) : Promise<any>  => {
-    try {
-        const { username, password } = req.body;
-        const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(401).json({ error: 'Authentication failed' });
-        }
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        if (!passwordMatch) {
-            return res.status(401).json({ error: 'Authentication failed' });
-        }
-        const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
-            expiresIn: '1h',
-        });
-        res.status(200).json({ token });
-    } catch (error) {
-        res.status(500).json({ error: 'Login failed' });
+router.post("/login", async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    console.log("Utilisateur trouvé :", user);
+
+    if (!user) {
+      return res.status(401).json({ error: "Authentication failed" });
     }
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Authentication failed" });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id, username: user.username },
+      "your-secret-key",
+      {
+        expiresIn: "1h",
+      }
+    );
+    res.status(200).json({ token, userId: user._id });
+  } catch (error) {
+    res.status(500).json({ error: "Login failed" });
+  }
 });
-
-
-
 
 export default router;

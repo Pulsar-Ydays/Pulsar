@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -16,25 +17,75 @@ import { Sidebar } from "@/components/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const profileSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().optional(), // Password can be optional for updates
-});
-
 export default function ProfileForm() {
+  const [error, setError] = useState<string | null>(null);
+
   const form = useForm({
-    resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: "John Doe", // Example default value
-      email: "john.doe@example.com", // Example default value
-      password: "", // Leave empty initially
+      name: "",
+      email: "",
+      password: "",
     },
   });
 
+  //Get By Id
+  const fetchUserProfile = async (userId: string) => {
+    //Récupération du Token pour authorisé la requête
+    const token = localStorage.getItem("token");
+    console.log("Token from localStorage:", token);
+
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    console.log("Fetching user profile for user ID:", userId);
+
+    const res = await fetch(`http://localhost:3000/api/users/${userId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      const errorDetails = await res.json();
+      console.error("Error response from server:", errorDetails);
+      throw new Error(errorDetails.message || "Failed to fetch user profile");
+    }
+
+    return await res.json();
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+
+        if (!userId) {
+          throw new Error("User ID is missing.");
+        }
+
+        const profile = await fetchUserProfile(userId);
+        console.log("Profile fetched:", profile);
+
+        form.reset({
+          name: profile.username,
+          email: profile.email,
+          password: "",
+        });
+      } catch (err) {
+        console.error("Failed to load user profile:", (err as Error).message);
+        setError("Failed to load your profile. Try again later.");
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const onSubmit = (data: any) => {
     console.log("Updated profile data:", data);
-    // Add logic to handle profile updates here
+    //update
   };
 
   return (
@@ -119,6 +170,19 @@ export default function ProfileForm() {
             </div>
           </form>
         </Form>
+        {/* Submit Button */}
+        <div className="mt-8 flex justify-center">
+          <Button
+            className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("userId");
+              window.location.href = "/Register";
+            }}
+          >
+            Déconnexion
+          </Button>
+        </div>
       </div>
     </div>
   );
