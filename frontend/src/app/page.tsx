@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
+import { decodeJWT } from "./utils/jwtUtils";
 import { Sidebar } from "@/components/sidebar";
 import { CryptoCard } from "@/components/crypto-card";
 import { StatsCard } from "@/components/stats-card";
@@ -11,7 +12,7 @@ import TransactionInput from "@/components/TransactionInput";
 import { Bitcoin, Clock } from "lucide-react";
 import UserStatus from "@/components/ui/userstatus";
 
-const mockChartData = [
+const mockChartData: { date: string; value: number }[] = [
   { date: "01/01", value: 400 },
   { date: "01/02", value: 300 },
   { date: "01/03", value: 500 },
@@ -27,6 +28,28 @@ export default function Home() {
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
+  //Gestion User Connecté
+  const [username, setUsername] = useState<string | null>(null);
+
+  // Stock de l'id
+  const [userId, setUserId] = useState<string | null>(null);
+
+  //On récup automatiquement le token du user connecté
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded: any = decodeJWT(token);
+        if (decoded) {
+          setUsername(decoded.username || "User");
+          setUserId(decoded.userId); // Recup l'ID user stocké dans le JWT
+        }
+      } catch (error) {
+        console.error("Invalid token", error);
+      }
+    }
+  }, []);
+
   return (
     <div className="flex h-screen bg-background bg-gray-900">
       <Sidebar />
@@ -34,8 +57,14 @@ export default function Home() {
         <div className="flex items-center justify-between p-6">
           <h1 className="font-mono text-3xl font-bold">Overview</h1>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 bg-secondary rounded-full px-1 py-1">
-              <span className="text-sm"><UserStatus /></span>
+
+            <div className="flex items-center gap-2 bg-secondary rounded-full px-4 py-2">
+              <Clock className="h-4 w-4" />
+              <span className="text-sm">0.0123 ETH</span>
+              <div className="bg-background/20 px-2 py-0.5 rounded text-xs">
+                {username || "User"}
+              </div>
+
             </div>
           </div>
         </div>
