@@ -9,14 +9,22 @@ type WalletValueProps = {
 const WalletValue: React.FC<WalletValueProps> = ({ totalValue, percentageChange, isPositive }) => {
   return (
     <section className="mb-8">
-      <h2 className="text-lg font-medium text-gray-400 mb-2">Wallet Value</h2>
-      <div className="text-4xl font-bold">
-        {totalValue}{" "}
-        <span className={`text-lg ${isPositive ? "text-green-400" : "text-red-400"}`}>
-          {percentageChange} {isPositive ? "⬆" : "⬇"}
-        </span>
-      </div>
-    </section>
+        <h2 className="text-base sm:text-lg font-medium text-gray-400 mb-2 text-center sm:text-left">
+            Wallet Value
+        </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div className="text-3xl sm:text-4xl font-bold text-center sm:text-left">
+            {totalValue}
+            </div>
+            <div
+            className={`mt-2 sm:mt-0 text-base sm:text-lg ${
+                isPositive ? "text-green-400" : "text-red-400"
+            } text-center sm:text-left`}
+            >
+            {percentageChange} {isPositive ? "⬆" : "⬇"}
+            </div>
+        </div>
+        </section>
   );
 };
 
