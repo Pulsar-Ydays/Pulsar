@@ -27,7 +27,7 @@ export default function Home() {
       <Sidebar />
       <div className="flex flex-grow justify-center items-center">
         <div className="relative flex flex-col max-w-md w-full bg-purple-800 bg-opacity-30 p-8 rounded-lg text-white shadow-lg">
-          <h1 className="text-xl font-semibold mb-6">Swap</h1>
+          <h1 className="font-mono text-xl font-semibold mb-6">Swap</h1>
           <div>
             <label htmlFor="from" className="block mb-2 text-sm">
               From
@@ -107,7 +107,7 @@ export default function Home() {
               />
             </div>
           </div>
-          <button className="mt-6 w-full bg-purple-600 py-2 rounded-lg text-white font-semibold hover:bg-purple-700 transition">
+          <button className="font-mono mt-6 w-full bg-purple-600 py-2 rounded-lg text-white font-semibold hover:bg-purple-700 transition">
             Swap
           </button>
         </div>

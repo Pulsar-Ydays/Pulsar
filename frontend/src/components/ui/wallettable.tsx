@@ -1,6 +1,4 @@
 import React from "react";
-import WalletData from "@/components/ui/walletdata";
-
 
 type Asset = {
   icon: string;
@@ -23,10 +21,10 @@ const AssetTable: React.FC<AssetTableProps> = ({ assets }) => {
             <table className="w-full text-left text-sm sm:text-base">
               <thead>
                 <tr className="border-b border-gray-700 text-gray-400">
-                  <th className="py-4 px-2">Assets</th>
-                  <th className="px-2  sm:table-cell">Price</th>
-                  <th className="px-2 hidden sm:table-cell">Total Balance</th>
-                  <th className="px-2  lg:table-cell">24h Market</th>
+                  <th className=" font-mono py-4 px-2">Assets</th>
+                  <th className="font-mono px-2  sm:table-cell">Price</th>
+                  <th className="font-mono px-2 hidden sm:table-cell">Total Balance</th>
+                  <th className="font-monopx-2  lg:table-cell">24h Market</th>
                 </tr>
               </thead>
               <tbody>
