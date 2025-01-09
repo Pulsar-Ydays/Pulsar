@@ -2,6 +2,15 @@ import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { Express } from 'express';
 
+/**
+ * @swagger
+ * tags:
+ *   - name: Transactions
+ *     description: Gestion des transactions
+ *   - name: Users
+ *     description: Gestion des utilisateurs
+ */
+
 // Configuration des options de Swagger
 const swaggerOptions = {
   definition: {

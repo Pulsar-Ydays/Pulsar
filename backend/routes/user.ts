@@ -11,10 +11,13 @@ import jwt from "jsonwebtoken";
 import {verifyToken} from "../middleware/authMiddleware";
 
 const router = Router();
+
 /**
  * @swagger
  * /api/users:
  *   get:
+ *     tags:
+ *       - Users
  *     summary: Récupère tous les utilisateurs
  *     description: Cette route permet de récupérer la liste complète des utilisateurs.
  *     responses:
@@ -52,6 +55,8 @@ router.get('/api/users', verifyToken, async (req: Request, res: Response) => {
  * @swagger
  * /api/users/{id}:
  *   get:
+ *     tags:
+ *       - Users
  *     summary: Récupère un utilisateur par ID
  *     description: Cette route permet de récupérer un utilisateur spécifique en utilisant son ID.
  *     parameters:
@@ -100,6 +105,8 @@ router.get('/api/users/:id',  verifyToken, async (req: Request, res: Response): 
  * @swagger
  * /api/users:
  *   post:
+ *     tags:
+ *       - Users
  *     summary: Crée un nouvel utilisateur
  *     description: Cette route permet de créer un nouvel utilisateur avec les données fournies.
  *     requestBody:
@@ -137,6 +144,8 @@ router.post('/api/users', verifyToken,  async (req: Request, res: Response) => {
  * @swagger
  * /api/users/{id}:
  *   patch:
+ *     tags:
+ *       - Users
  *     summary: Met à jour un utilisateur
  *     description: Met à jour les informations d'un utilisateur existant.
  *     parameters:
@@ -200,6 +209,8 @@ router.patch('/api/users/:id',verifyToken,  async (req: Request, res: Response) 
  * @swagger
  * /api/users/{id}:
  *   delete:
+ *     tags:
+ *       - Users
  *     summary: Supprime un utilisateur
  *     description: Supprime un utilisateur spécifique en utilisant son ID.
  *     parameters:
@@ -245,6 +256,8 @@ router.delete('/api/users/:id', verifyToken,  async (req: Request, res: Response
  * @swagger
  * /login:
  *   post:
+ *     tags:
+ *       - Users
  *     summary: Authentifie un utilisateur
  *     description: Permet à un utilisateur de se connecter avec un nom d'utilisateur et un mot de passe.
  *     requestBody:
