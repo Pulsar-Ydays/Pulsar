@@ -18,14 +18,15 @@ type AssetTableProps = {
 const AssetTable: React.FC<AssetTableProps> = ({ assets }) => {
     return (
         <section className="bg-gray-800 rounded-lg p-6">
-          <div className="max-h-96 overflow-y-auto">
-            <table className="w-full text-left">
+        <div className="max-h-96 overflow-y-auto">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm sm:text-base">
               <thead>
-                <tr className="border-b border-gray-700">
-                  <th className="py-4">Assets</th>
-                  <th>Price</th>
-                  <th>Total Balance</th>
-                  <th>24h Market</th>
+                <tr className="border-b border-gray-700 text-gray-400">
+                  <th className="py-4 px-2">Assets</th>
+                  <th className="px-2">Price</th>
+                  <th className="px-2">Total Balance</th>
+                  <th className="px-2">24h Market</th>
                 </tr>
               </thead>
               <tbody>
@@ -43,7 +44,10 @@ const AssetTable: React.FC<AssetTableProps> = ({ assets }) => {
               </tbody>
             </table>
           </div>
-        </section>
+        </div>
+      </section>
+      
+
       );
 };
 
