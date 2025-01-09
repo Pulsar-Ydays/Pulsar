@@ -8,7 +8,7 @@ import { StatsCard } from "@/components/stats-card";
 import { Button } from "@/components/ui/button";
 import TransactionInput from "@/components/TransactionInput";
 
-import { Bitcoin, Clock } from "lucide-react"; //add ethereum
+import { Bitcoin, Clock } from "lucide-react";
 
 const mockChartData = [
   { date: "01/01", value: 400 },
@@ -27,7 +27,7 @@ export default function Home() {
   const closeModal = () => setModalOpen(false);
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background bg-gray-900">
       <Sidebar />
       <main className="flex-1 overflow-y-auto">
         <div className="flex items-center justify-between p-6">
