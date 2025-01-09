@@ -19,7 +19,7 @@ export default function Home() {
     { icon: "logo.png", name: "Tether", price: "$1.00", balance: "$2,000.00", market: "+2.73%", color: "green" },
     { icon: "logo.png", name: "Litecoin", price: "$66.76", balance: "$3,560.00", market: "+2.73%", color: "green" },
     { icon: "logo.png", name: "Litecoin", price: "$66.76", balance: "$3,560.00", market: "+2.73%", color: "green" },
-    { icon: "logo.png", name: "Litecoin", price: "$66.76", balance: "$3,560.00", market: "+2.73%", color: "green" },
+    { icon: "logo.png", name: "Litecoin", price: "$66.76", balance: "$3,560.00", market: "+2.74%", color: "green" },
   ]; 
 
 
@@ -27,7 +27,7 @@ export default function Home() {
     <div className="flex min-h-screen bg-background">
   <Sidebar />
   <main className="flex-1 bg-gradient-to-b from-black to-purple-900 pt-8 min-h-full">
-    <div className="max-w-full px-4 md:px-8">
+    <div className="max-w-full md:px-8">
       <header className="flex flex-col md:flex-row justify-between items-center mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-0">Wallet</h1>
         <UserStatus />
