@@ -5,7 +5,7 @@ import RegisterForm from "@/components/RegisterForm";
 import LoginForm from "@/components/LoginForm";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeftIcon } from '@heroicons/react/24/outline'; // Import de l'icône
+import { ArrowLeftIcon } from '@heroicons/react/24/outline'; 
 
 export default function SlidingForm() {
   const [rightPanelActive, setRightPanelActive] = useState(false);

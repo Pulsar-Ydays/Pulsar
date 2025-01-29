@@ -2,6 +2,7 @@
 
 import { Sidebar } from "@/components/sidebar";
 import { useState } from "react";
+import { useState } from "react";
 
 export default function Home() {
   const [fromCurrency, setFromCurrency] = useState("USDT");
@@ -22,7 +23,26 @@ export default function Home() {
     BTC: "../BTC.png",
   };
 
+  const [fromCurrency, setFromCurrency] = useState("USDT");
+  const [toCurrency, setToCurrency] = useState("ETH");
+  const [fromAmount, setFromAmount] = useState("");
+  const [toAmount, setToAmount] = useState("");
+
+  const handleSwap = () => {
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
+    setFromAmount(toAmount);
+    setToAmount(fromAmount);
+  };
+
+  const currencyIcons = {
+    USDT: "../USDT.png",
+    ETH: "../Eth.png",
+    BTC: "../BTC.png",
+  };
+
   return (
+    <div className="flex w-full h-screen bg-gradient-to-b from-black to-purple-900">
     <div className="flex w-full h-screen bg-gradient-to-b from-black to-purple-900">
       <Sidebar />
       <div className="flex flex-grow justify-center items-center">

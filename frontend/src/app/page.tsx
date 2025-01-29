@@ -1,11 +1,15 @@
 "use client";
 
+import { useState } from "react";
+
 import { Sidebar } from "@/components/sidebar";
 import { CryptoCard } from "@/components/crypto-card";
 import { StatsCard } from "@/components/stats-card";
 import { Button } from "@/components/ui/button";
+import TransactionInput from "@/components/TransactionInput";
 
-import { Bitcoin, Clock } from "lucide-react"; //add ethereum
+import { Bitcoin, Clock } from "lucide-react";
+import UserStatus from "@/components/ui/userstatus";
 
 const mockChartData = [
   { date: "01/01", value: 400 },
@@ -18,19 +22,20 @@ const mockChartData = [
 ];
 
 export default function Home() {
+  //Gestion Modal "ajouter crypto"
+  const [isModalOpen, setModalOpen] = useState(false);
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background bg-gray-900">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto mt-16 md:mt-0"> 
         <div className="flex items-center justify-between p-6">
           <h1 className="text-3xl font-bold">Overview</h1>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 bg-secondary rounded-full px-4 py-2">
-              <Clock className="h-4 w-4" />
-              <span className="text-sm">0.0123 ETH</span>
-              <div className="bg-background/20 px-2 py-0.5 rounded text-xs">
-                0x...6FK
-              </div>
+            <div className="flex items-center gap-2 bg-secondary rounded-full px-1 py-1">
+              <span className="text-sm"><UserStatus /></span>
             </div>
           </div>
         </div>
@@ -64,7 +69,14 @@ export default function Home() {
             </p>
             <Button>Learn More</Button>
           </div>
-
+          <div className="add">
+            <button
+              className=" bg-[#FF4DFF] text-white py-2 px-4 rounded-md hover:bg-[#D900FF] transition"
+              onClick={openModal}
+            >
+              Ajouter ma crypto
+            </button>
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <StatsCard
               title="User Growth"
@@ -81,7 +93,20 @@ export default function Home() {
           </div>
         </div>
       </main>
-
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-[#1A1A1D] p-6 rounded-lg max-w-md w-full">
+            <button
+              onClick={closeModal}
+              className=" text-white-200 hover:text-white"
+            >
+              X
+            </button>
+            <TransactionInput />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
