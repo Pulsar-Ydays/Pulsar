@@ -28,7 +28,7 @@ export default function Home() {
       <div className="flex flex-grow justify-center items-center">
         <div className="relative flex flex-col max-w-md w-full bg-purple-800 bg-opacity-30 p-8 rounded-lg text-white shadow-lg">
           <h1 className="font-mono text-xl font-semibold mb-6">Swap</h1>
-          <div>
+          <div className="w-full">
             <label htmlFor="from" className="block mb-2 text-sm">
               From
             </label>
@@ -53,7 +53,7 @@ export default function Home() {
                 value={fromAmount}
                 onChange={(e) => setFromAmount(e.target.value)}
                 placeholder="0.00"
-                className="bg-transparent text-right text-white flex-1 focus:outline-none"
+                className="bg-transparent text-right text-white flex-1 focus:outline-none w-full min-w-0"
               />
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function Home() {
               </svg>
             </button>
           </div>
-          <div>
+          <div className="w-full">
             <label htmlFor="to" className="block mb-2 text-sm">
               To
             </label>
@@ -103,7 +103,7 @@ export default function Home() {
                 value={toAmount}
                 onChange={(e) => setToAmount(e.target.value)}
                 placeholder="0.00"
-                className="bg-transparent text-right text-white flex-1 focus:outline-none"
+                className="bg-transparent text-right text-white flex-1 focus:outline-none maw-w-0 w-full"
               />
             </div>
           </div>
