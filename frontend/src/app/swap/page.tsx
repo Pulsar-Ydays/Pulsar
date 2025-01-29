@@ -23,7 +23,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex w-full h-screen bg-gradient-to-b from-black to-purple-900">
+    <div className="flex w-full h-screen bg-gradient-to-b from-black via-gray-900 to-purple-900">
       <Sidebar />
       <div className="flex flex-grow justify-center items-center">
         <div className="relative flex flex-col max-w-md w-full bg-purple-800 bg-opacity-30 p-8 rounded-lg text-white shadow-lg">

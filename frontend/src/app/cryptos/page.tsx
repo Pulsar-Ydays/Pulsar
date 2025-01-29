@@ -71,11 +71,12 @@ export default function Cryptos() {
       <Sidebar />
 
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto p-6">
-        <h1 className="font-mono text-3xl font-bold mb-6">Cryptos</h1>
+      <main className="flex-1 overflow-y-auto p-6 flex flex-col justify-start items-center sm:items-start sm:justify-start">
+        {/* Title avec padding supplémentaire */}
+        <h1 className="font-mono text-2xl md:text-3xl mb-8 sm:mb-12 px-4 md:px-8 text-center sm:text-left">Cryptos</h1>
 
         {/* Input pour sélectionner une crypto */}
-        <div className="mb-8">
+        <div className="mb-8 sm:mb-12 px-4 sm:px-8 w-full max-w-md">
           <label
             htmlFor="crypto-select"
             className="font-mono block text-lg font-semibold mb-2"
@@ -85,7 +86,7 @@ export default function Cryptos() {
           <select
             id="crypto-select"
             onChange={handleChange}
-            className="bg-gray-800 text-white border border-gray-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="bg-gray-800 text-white border border-gray-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
             defaultValue=""
           >
             <option value="" disabled>
@@ -99,14 +100,15 @@ export default function Cryptos() {
           </select>
         </div>
 
-        {/* Section pour afficher le graphique */}
+        {/* Section pour afficher le graphique avec un padding et un espacement supplémentaires */}
         {currentCrypto ? (
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-6 w-full max-w-10xl mx-auto">
             <StatsCard
               title={`${currentCrypto.name} (${currentCrypto.symbol}) Chart`}
               data={currentCrypto.chartData}
               percentage={currentCrypto.percentage}
               gradient={currentCrypto.gradient}
+              className="w-full h-[300px] sm:h-[500px]"
             />
           </div>
         ) : (
