@@ -32,10 +32,10 @@ export default function Home() {
       <Sidebar />
       <main className="flex-1 overflow-y-auto mt-16 md:mt-0"> 
         <div className="flex items-center justify-between p-6">
-          <h1 className="text-3xl font-bold">Overview</h1>
+          <h1 className="text-3xl font-bold font-mono">Overview</h1>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 bg-secondary rounded-full px-1 py-1">
-              <span className="text-sm"><UserStatus /></span>
+              <span className="text-sm font-mono"><UserStatus /></span>
             </div>
           </div>
         </div>
@@ -61,28 +61,22 @@ export default function Home() {
 
         <div className="p-6">
           <div className="mb-8 bg-primary/10 rounded-lg p-8">
-            <h2 className="text-2xl font-bold mb-2">
+            <h2 className="text-2xl font-mono font-bold mb-2 ">
               Empower with Intelligent Innovation
             </h2>
-            <p className="text-muted-foreground mb-4">
+            <p className="text-muted-foreground font-mono mb-4 ">
               Tomorrow Unleashed: Intelligent Innovation Awaits.
             </p>
             <Button>Learn More</Button>
           </div>
-          <div className="add">
-            <button
-              className=" bg-[#FF4DFF] text-white py-2 px-4 rounded-md hover:bg-[#D900FF] transition"
-              onClick={openModal}
-            >
-              Ajouter ma crypto
-            </button>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
             <StatsCard
               title="User Growth"
               data={mockChartData}
               percentage="+5%"
               gradient="userGrowth"
+              
             />
             <StatsCard
               title="Task Done"
@@ -90,6 +84,14 @@ export default function Home() {
               percentage="+8%"
               gradient="taskDone"
             />
+          </div>
+                    <div className="add">
+            <button
+              className=" bg-[#FF4DFF] text-white font-mono py-2 px-4 mt-5 rounded-md hover:bg-[#D900FF] transition"
+              onClick={openModal}
+            >
+              Ajouter ma crypto
+            </button>
           </div>
         </div>
       </main>
