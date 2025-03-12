@@ -25,7 +25,7 @@ router.get('/api/wallets/userId', verifyToken, async (req: Request, res: Respons
     try {
         const userId: string = req.params.userId;
 
-        const allWallet = await getAllWallet();
+        const allWallet = await getAllWallet(userId);
         res.status(200).json(allWallet);
     } catch (error: any) {
         res.status(500).json({ message: error.message });
