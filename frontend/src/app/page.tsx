@@ -42,7 +42,8 @@ export default function Home() {
         const decoded: any = decodeJWT(token);
         if (decoded) {
           setUsername(decoded.username || "User");
-          setUserId(decoded.userId); // Recup l'ID user stocké dans le JWT
+          localStorage.setItem("user", decoded.username);
+          setUserId(decoded.userId);
         }
       } catch (error) {
         console.error("Invalid token", error);
@@ -53,18 +54,16 @@ export default function Home() {
   return (
     <div className="flex h-screen bg-background bg-gray-900">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto mt-16 md:mt-0"> 
+      <main className="flex-1 overflow-y-auto mt-16 md:mt-0">
         <div className="flex items-center justify-between p-6">
           <h1 className="font-mono text-3xl font-bold">Overview</h1>
           <div className="flex items-center gap-4">
-
             <div className="flex items-center gap-2 bg-secondary rounded-full px-4 py-2">
               <Clock className="h-4 w-4" />
               <span className="text-sm">0.0123 ETH</span>
               <div className="bg-background/20 px-2 py-0.5 rounded text-xs">
-                {username || "User"}
+                <UserStatus />
               </div>
-
             </div>
           </div>
         </div>
@@ -112,14 +111,14 @@ export default function Home() {
               gradient="taskDone"
             />
           </div>
-            <div className="add">
+          {/* <div className="add">
               <button
                 className="px-4 py-2 mt-5 md:px-6 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm"
                 onClick={openModal}
               >
                 Ajouter ma crypto
               </button>
-            </div>
+            </div> */}
         </div>
       </main>
       {/* Modal */}
