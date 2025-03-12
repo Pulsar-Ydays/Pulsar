@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen bg-background">
   <Sidebar />
-  <main className="flex-1 bg-gradient-to-b from-black to-purple-900 pt-8 min-h-full">
+  <main className="flex-1 bg-gradient-to-b from-black via-gray-900 to-purple-900 pt-8 min-h-full">
     <div className="max-w-full md:px-8">
       <header className="flex flex-col md:flex-row justify-between items-center mb-8">
         <h1 className="font-mono text-2xl md:text-3xl mb-4 md:mb-0">Wallet</h1>
