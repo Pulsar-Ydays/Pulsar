@@ -135,7 +135,7 @@ router.get('/api/users/:id',  verifyToken, async (req: Request, res: Response): 
 router.post('/api/users', async (req: Request, res: Response) => {
     try {
         const user = await createUser(req.body);
-        const createdWallet = await createWallet({userId: user._id.toString(), name: "Default Wallet"});
+        const createdWallet = await createWallet({userId: user._id, name: "Default Wallet"});
         console.log("Wallet created", createdWallet);
         res.status(201).json(user);
     } catch (error : any) {

@@ -24,7 +24,7 @@ export const getCryptoData = async () => {
             },
             params: {
                 start: 1,
-                limit: 1,
+                limit: 50,
                 convert: 'USD',
             },
         });
