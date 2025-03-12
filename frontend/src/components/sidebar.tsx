@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 // Vérification de la présence du token
 const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -79,6 +80,7 @@ export function Sidebar() {
               );
             })}
           </div>
+          <LanguageSwitcher />
         </ScrollArea>
 
         {/* Footer intégré dans la sidebar */}

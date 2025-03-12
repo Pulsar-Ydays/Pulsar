@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 
 const UserStatus = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -14,7 +16,7 @@ const UserStatus = () => {
   return (
     <div className="flex items-center gap-2 bg-secondary rounded-full px-4 py-2">
       <span className="font-mono text-xl">
-        {isLoggedIn ? userName : 'Se connecter'}
+        {isLoggedIn ? userName : t('connect')}
       </span>
     </div>
   );

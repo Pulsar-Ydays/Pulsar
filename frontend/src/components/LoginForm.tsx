@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from 'react-i18next';
 import * as z from "zod";
 import {
   Form,
@@ -34,6 +35,7 @@ export default function LoginForm() {
     },
   });
 
+  const { t } = useTranslation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const onSubmit = async (data: any) => {
@@ -77,7 +79,7 @@ export default function LoginForm() {
         className="space-y-6 flex flex-col items-center w-full max-w-md p-6 bg-[#1A1A1D] bg-opacity-90 shadow-xl rounded-lg"
       >
         {/* Titre */}
-        <h1 className="text-3xl font-extrabold text-white">Connexion</h1>
+        <h1 className="text-3xl font-extrabold text-white">{t('sign_in')}</h1>
 
         {/* Affichage des erreurs globales */}
         {errorMessage && (
@@ -90,7 +92,7 @@ export default function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-300">Email</FormLabel>
+              <FormLabel className="text-gray-300">{t('email')}</FormLabel>
               <FormControl>
                 <Input
                   placeholder="example@domain.com"
@@ -109,7 +111,7 @@ export default function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-300">Mot de passe</FormLabel>
+              <FormLabel className="text-gray-300">{t('paasword')}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
@@ -125,7 +127,7 @@ export default function LoginForm() {
 
         {/* Lien oublié mot de passe */}
         <a href="#" className="text-xs text-[#FF4DFF] hover:underline mt-2">
-          Mot de passe oublié ?
+          {t('forgotten_password')}
         </a>
 
         {/* Bouton de soumission */}
@@ -133,7 +135,7 @@ export default function LoginForm() {
           type="submit"
           className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-2 uppercase tracking-wider shadow-md"
         >
-          Connexion
+          {t('sign_in')}
         </Button>
       </form>
     </Form>

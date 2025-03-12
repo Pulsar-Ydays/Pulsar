@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from 'react-i18next';
 import * as z from "zod";
 import {
   Form,
@@ -26,6 +27,7 @@ const registerSchema = z.object({
 export default function RegisterForm() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { t } = useTranslation();
 
   const form = useForm({
     resolver: zodResolver(registerSchema),
@@ -70,7 +72,7 @@ export default function RegisterForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6 flex flex-col items-center w-full max-w-md p-6 bg-[#1A1A1D] bg-opacity-90 shadow-xl rounded-lg"
       >
-        <h1 className="text-3xl font-extrabold text-white">Create Account</h1>
+        <h1 className="text-3xl font-extrabold text-white">{t ("create_account")}</h1>
 
         {/* Name Field */}
         <FormField
@@ -78,7 +80,7 @@ export default function RegisterForm() {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-300">username</FormLabel>
+              <FormLabel className="text-gray-300">{t('username')}</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Your username"
@@ -97,7 +99,7 @@ export default function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-300">Email</FormLabel>
+              <FormLabel className="text-gray-300">{t('email')}</FormLabel>
               <FormControl>
                 <Input
                   placeholder="example@domain.com"
@@ -116,7 +118,7 @@ export default function RegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-300">Password</FormLabel>
+              <FormLabel className="text-gray-300">{t('password')}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
@@ -135,7 +137,7 @@ export default function RegisterForm() {
           type="submit"
           className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-2 uppercase tracking-wider shadow-md"
         >
-          Sign Up
+          {t('sign_up')}
         </Button>
 
         {/* Success Messages */}

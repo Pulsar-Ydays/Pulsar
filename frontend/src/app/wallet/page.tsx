@@ -6,6 +6,7 @@ import WalletValue from "@/components/ui/walletvalue";
 import UserStatus from "@/components/ui/userstatus";
 import { useState } from "react";
 import TransactionInput from "@/components/TransactionInput";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -23,6 +24,7 @@ export default function Home() {
    const [isModalOpen, setModalOpen] = useState(false);
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
+    const { t } = useTranslation();
 
 
   return (
@@ -50,7 +52,7 @@ export default function Home() {
           className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm"
           onClick={openModal}
         >
-          Ajouter ma crypto
+          {t('add_my_crypto')}
         </button>
       </div>
       {isModalOpen && (

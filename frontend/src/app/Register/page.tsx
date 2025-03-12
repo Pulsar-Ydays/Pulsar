@@ -6,10 +6,13 @@ import LoginForm from "@/components/LoginForm";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'; 
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function SlidingForm() {
   const [rightPanelActive, setRightPanelActive] = useState(false);
   const [isSliding, setIsSliding] = useState(false);
+  const { t } = useTranslation();
 
   const handleClick = (direction: string) => {
     setIsSliding(true);
@@ -61,15 +64,15 @@ export default function SlidingForm() {
               width={100}
               height={100}
             />
-            <h1 className="font-mono text-4xl font-extrabold text-white shadow-lg">Welcome Back!</h1>
+            <h1 className="font-mono text-4xl font-extrabold text-white shadow-lg">{t('welcome_back')}</h1>
             <p className="font-mono mt-4 mb-6 text-gray-200">
-              To keep connected with us, please log in with your personal info.
+              {t("to_keep_connected")}
             </p>
             <button
               className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-8 py-2 uppercase tracking-wider mt-4"
               onClick={() => handleClick("left")}
             >
-              Sign In
+              {t("sign_in")}
             </button>
           </div>
           <div className={`flex flex-col items-center justify-center h-full ${rightPanelActive ? "hidden" : ""}`}>
@@ -80,19 +83,20 @@ export default function SlidingForm() {
               width={100}
               height={100}
             />
-            <h1 className="font-mono text-4xl font-extrabold text-white shadow-lg">Hello, Explorer!</h1>
+            <h1 className="font-mono text-4xl font-extrabold text-white shadow-lg">{t('hello_explorer')}</h1>
             <p className="font-mono mt-4 mb-6 text-gray-200">
-              Enter your personal details and start your journey with us.
+              {t("personal_details")}
             </p>
             <button
               className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-8 py-2 uppercase tracking-wider mt-4"
               onClick={() => handleClick("right")}
             >
-              Sign Up
+              {t("sign_up")}
             </button>
           </div>
         </div>
       </div>
+      <LanguageSwitcher />
     </div>
   );
 }
