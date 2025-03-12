@@ -1,0 +1,14 @@
+la collection wallet a un userId et un array avec les id de chaque transaction lie a ce wallet
+dans la collection transaction rajoute la colonne walletId avec l'id du wallet lie a la personne connecte
+dans la collection user rajoute la colonne walletId (array) avec l'id du wallet lie
+
+lorsque je creer un user un wallet est automatiquement creer
+
+
+
+
+je creer un profil le wallet est creer avec l id du user mias dans la collectio user le walletId est vide
+
+chaque user aura un ou plusieurs wallet
+cahque wallet aura une ou plusieurs transaction
+on pourra afficher les transactions d'un wallet avec la somme total des transactions ce qui nous donnera la valuer du wallet
