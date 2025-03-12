@@ -5,4 +5,5 @@ export default interface TransacData {
     currency: string;
     quantity: number;
     price: number;
+    walletId: string;
 }

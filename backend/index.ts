@@ -3,7 +3,9 @@ import { connectDB } from "./connect_db";
 import express from 'express';
 import routerUser from "./routes/user";
 import routerTransac from "./routes/transac";
-import { setupSwagger } from './swagger'; // Import de Swagger
+import routerWallet from "./routes/wallet";
+import routerMarket from "./routes/market";
+import { setupSwagger } from './swagger';
 
 dotenv.config();
 
@@ -13,6 +15,8 @@ const app = express();
 app.use(express.json());
 app.use(routerUser);
 app.use(routerTransac);
+app.use(routerWallet);
+app.use(routerMarket);
 
 // Configuration de Swagger
 setupSwagger(app);
