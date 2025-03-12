@@ -6,17 +6,25 @@ import {getAllWallet} from "../API/wallet/getAllWallet";
 
 const router = Router();
 
-router.post('/api/wallets', verifyToken, async (req: Request, res: Response) => {
+router.post('/api/wallets/:userId', verifyToken, async (req: Request, res: Response) => {
     try {
-        const newTransac = await createWallet(req.body);
-        res.status(201).json(newTransac);
+        const userId: string = req.params.userId;
+
+        const walletData = { ...req.body, userId };
+
+        const newWallet = await createWallet(walletData);
+        res.status(201).json(newWallet);
     } catch (error: any) {
-        res.status(500).json({ message: 'Error creating transaction' });
+        console.error("Error creating wallet:", error);
+        res.status(500).json({ message: "Error creating the Wallet" });
     }
 });
 
-router.get('/api/wallets', verifyToken, async (req: Request, res: Response) => {
+
+router.get('/api/wallets/userId', verifyToken, async (req: Request, res: Response) => {
     try {
+        const userId: string = req.params.userId;
+
         const allWallet = await getAllWallet();
         res.status(200).json(allWallet);
     } catch (error: any) {
