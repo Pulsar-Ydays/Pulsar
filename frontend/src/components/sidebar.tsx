@@ -14,6 +14,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 // Vérification de la présence du token
 const token =
@@ -102,6 +103,7 @@ export function Sidebar() {
               );
             })}
           </div>
+          <LanguageSwitcher />
         </ScrollArea>
       </div>
     </>

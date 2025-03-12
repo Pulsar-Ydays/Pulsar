@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Sidebar } from "@/components/sidebar";
 import { StatsCard } from "@/components/stats-card";
+import { useTranslation } from 'react-i18next';
+
 
 // Données simulées pour les graphiques
 const bitcoinData = [
@@ -57,6 +59,7 @@ export default function Cryptos() {
   const [selectedCrypto, setSelectedCrypto] = useState<
     keyof typeof cryptoData | null
   >(null);
+  const { t } = useTranslation();
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value as keyof typeof cryptoData;
@@ -81,7 +84,7 @@ export default function Cryptos() {
             htmlFor="crypto-select"
             className="font-mono block text-lg font-semibold mb-2"
           >
-            Select a Cryptocurrency
+            {t("select")}
           </label>
           <select
             id="crypto-select"
@@ -90,7 +93,7 @@ export default function Cryptos() {
             defaultValue=""
           >
             <option value="" disabled>
-              Select a Cryptocurrency
+             {t("select")}
             </option>
             {Object.keys(cryptoData).map((cryptoKey) => (
               <option key={cryptoKey} value={cryptoKey}>
@@ -113,7 +116,7 @@ export default function Cryptos() {
           </div>
         ) : (
           <div className="font-mono text-center text-gray-400">
-            <p>Please select a cryptocurrency to view its chart.</p>
+            <p> {t ('please_select')} </p>
           </div>
         )}
       </main>

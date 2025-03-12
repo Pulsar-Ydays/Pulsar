@@ -3,9 +3,12 @@
 import { useState } from "react";
 import { Sidebar } from "@/components/sidebar";
 
+import { useTranslation } from 'react-i18next';
+
 export default function Calculator() {
   const [gain, setGain] = useState<number | "">("");
   const [result, setResult] = useState<number | null>(null);
+  const { t } = useTranslation();
 
   const calculateTax = () => {
     if (typeof gain === "number" && gain > 0) {
@@ -23,7 +26,7 @@ export default function Calculator() {
       {/* Main content */}
       <main className="flex-1 overflow-y-auto p-6 flex flex-col items-center justify-center">
         <h1 className="font-mono text-3xl font-bold mb-6 text-center">
-          Calculez vos taxes sur les cryptos
+        {t('calculate')}
         </h1>
 
         {/* Input pour les gains */}
@@ -32,7 +35,7 @@ export default function Calculator() {
             type="number"
             value={gain}
             onChange={(e) => setGain(Number(e.target.value) || "")}
-            placeholder="Entrez vos gains"
+            placeholder={t('enter_your_earnings')}
             className="font-mono w-full p-3 rounded-md bg-gray-800 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-purple-600 focus:outline-none"
           />
 
@@ -41,7 +44,7 @@ export default function Calculator() {
             onClick={calculateTax}
             className="w-full p-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white font-mono transition-all"
           >
-            Calculer !
+           {t('Calculator')}
           </button>
         </div>
 
