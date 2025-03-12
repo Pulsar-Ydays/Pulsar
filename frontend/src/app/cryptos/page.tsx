@@ -94,7 +94,6 @@ export default function Cryptos() {
             `https://cryptopanic.com/api/free/v1/posts/?auth_token=${apiKey}&kind=news`
           );
           setActualites(response.data.results);
-          console.log(response.data.results);
         }
       } catch (error) {
         console.error("Erreur lors de la récupération des actualités:", error);
@@ -102,6 +101,35 @@ export default function Cryptos() {
     };
 
     fetchActualites();
+
+    const fetchCryptoData = async () => {
+      const apiKey = process.env.NEXT_PUBLIC_COINMARKETCAP_API_KEY;
+      const apiUrl = process.env.NEXT_PUBLIC_COINMARKETCAP_API_URL;
+
+      if (!apiKey || !apiUrl) {
+        throw new Error("API key or URL is not defined");
+      }
+
+      try {
+        const response = await axios.get(
+          `${apiUrl}/v1/cryptocurrency/listings/latest`,
+          {
+            headers: {
+              "X-CMC_PRO_API_KEY": apiKey,
+            },
+          }
+        );
+
+        console.log(response.data);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des données des cryptos:",
+          error
+        );
+      }
+    };
+
+    fetchCryptoData();
   }, []);
 
   return (
@@ -114,7 +142,6 @@ export default function Cryptos() {
         <div>
           <h1 className="text-3xl font-bold mb-6">Cryptos</h1>
 
-          {/* Input pour sélectionner une crypto */}
           <div className="mb-8">
             <label
               htmlFor="crypto-select"
@@ -157,7 +184,7 @@ export default function Cryptos() {
         </div>
 
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">Actualités</h2>
+          <h2 className="text-3xl font-bold mb-6">Actualités</h2>
           {actualites && actualites.length > 0 ? (
             actualites.slice(0, 10).map((article, index) => (
               <div
