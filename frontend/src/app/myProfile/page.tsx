@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -16,6 +16,7 @@ import {
 import { Sidebar } from "@/components/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function ProfileForm() {
   const [error, setError] = useState<string | null>(null);
@@ -83,9 +84,77 @@ export default function ProfileForm() {
     fetchData();
   }, []);
 
-  const onSubmit = (data: any) => {
-    console.log("Updated profile data:", data);
-    //update
+  const onSubmit = async (data: any) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
+
+      if (!userId || !token) {
+        throw new Error("User ID or token is missing.");
+      }
+
+      const res = await fetch(`http://localhost:3000/api/users/${userId}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: data.name,
+          email: data.email,
+          ...(data.password && { password: data.password }),
+        }),
+      });
+
+      if (!res.ok) {
+        const errorDetails = await res.json();
+        console.error("Update failed:", errorDetails);
+        setError(errorDetails.message || "Failed to update profile");
+        return;
+      }
+
+      const updatedProfile = await res.json();
+      console.log("Profile updated successfully:", updatedProfile);
+      setError(null);
+
+      alert("Profile updated successfully!");
+    } catch (err) {
+      console.error("Update profile error:", err);
+      setError("An unexpected error occurred. Please try again later.");
+    }
+  };
+
+  const deleteUser = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
+
+      if (!userId || !token) {
+        throw new Error("User ID or token is missing.");
+      }
+
+      const res = await fetch(`http://localhost:3000/api/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        const errorDetails = await res.json();
+        console.error("Delete failed:", errorDetails);
+        setError(errorDetails.message || "Failed to delete profile");
+        return;
+      }
+
+      alert("Profile deleted successfully!");
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+    } catch (err) {
+      console.error("Delete profile error:", err);
+      setError("An unexpected error occurred. Please try again later.");
+    }
   };
 
   return (
@@ -159,30 +228,35 @@ export default function ProfileForm() {
               </div>
             </div>
 
-            {/* Submit Button */}
-            <div className="mt-8 flex justify-center">
+            <div className="mt-8 flex flex-col items-center space-y-4">
               <Button
                 type="submit"
                 className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
               >
                 Update Profile
               </Button>
+
+              <Link href="/Register">
+                <Button
+                  className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("userId");
+                  }}
+                >
+                  Déconnexion
+                </Button>
+              </Link>
+
+              <Button
+                className="bg-red-600 hover:bg-red-800 text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
+                onClick={deleteUser}
+              >
+                Supprimer le compte
+              </Button>
             </div>
           </form>
         </Form>
-        {/* Submit Button */}
-        <div className="mt-8 flex justify-center">
-          <Button
-            className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
-            onClick={() => {
-              localStorage.removeItem("token");
-              localStorage.removeItem("userId");
-              window.location.href = "/Register";
-            }}
-          >
-            Déconnexion
-          </Button>
-        </div>
       </div>
     </div>
   );

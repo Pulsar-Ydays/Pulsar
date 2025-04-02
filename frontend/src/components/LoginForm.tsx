@@ -58,6 +58,7 @@ export default function LoginForm() {
       // On stock dans le local Storage
       localStorage.setItem("token", result.token);
       localStorage.setItem("userId", result.userId);
+      localStorage.setItem("user", JSON.stringify({ name: result.userName }));
       alert("Vous êtes connecté avec succès!");
 
       // Redirection vers overview
