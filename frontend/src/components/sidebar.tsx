@@ -65,7 +65,7 @@ export function Sidebar() {
       <div
         ref={sidebarRef} 
 
-        className={`fixed top-0 left-0 h-screen bg-card border-r border-purple-800 pt-16 transform ${
+        className={`fixed top-0 left-0 h-screen z-50 bg-card border-r border-purple-800 pt-16 transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 sm:static sm:translate-x-0 w-64 sm:w-72 lg:w-80`}
       >

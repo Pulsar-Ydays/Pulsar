@@ -113,33 +113,36 @@ export default function Wallet() {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar />
-      <main className="flex-1 bg-gradient-to-b from-black to-purple-900 pt-8 min-h-full">
-        <div className="max-w-full md:px-8">
-          <header className="flex flex-col md:flex-row justify-between items-center mb-8">
-            <h1 className="font-mono text-2xl md:text-3xl mb-4 md:mb-0">
-              Wallet
-            </h1>
-            <UserStatus />
-          </header>
 
-          <section className="mb-8">
-            <div className="container mx-auto">
-              <WalletValue
-                totalValue="$65,690.00"
-                percentageChange="10.21%"
-                isPositive={true}
-              />
-            </div>
-          </section>
+  <Sidebar />
+  <main className="flex-1 bg-gradient-to-b from-black via-gray-900 to-purple-900 pt-8 min-h-full">
+    <div className="max-w-full md:px-8">
+      <header className="flex flex-col md:flex-row justify-between items-center mb-8">
+        <h1 className="font-mono text-2xl md:text-3xl mb-4 md:mb-0">Wallet</h1>
+        <UserStatus />
+      </header>
 
-          <div className="flex justify-center items-center mb-6 md:justify-start">
-            <button
-              className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm"
-              onClick={() => setTransactionModalOpen(true)}
-            >
-              Ajouter une transaction
-            </button>
+      <section className="mb-8">
+        <div className="container mx-auto">
+          <WalletValue 
+            totalValue="$65,690.00" 
+            percentageChange="10.21%" 
+            isPositive={true} 
+          />
+        </div>
+      </section>
+
+      <div className="flex justify-center items-center mb-6 md:justify-start">
+        <button
+          className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm"
+          onClick={openModal}
+        >
+          Ajouter ma crypto
+        </button>
+      </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-[#1A1A1D] p-6 rounded-lg max-w-md w-full">
 
             <button
               onClick={() => setWalletModalOpen(true)}
