@@ -13,28 +13,6 @@ interface CryptoData {
   image?: string;
 }
 
-// Interface pour les données de l'API
-interface ApiResponse {
-  status: {
-    error_code: number;
-    elapsed: number;
-    timestamp: string;
-  };
-  data: Array<{
-    id: number;
-    name: string;
-    symbol: string;
-    slug: string;
-    quote: {
-      USD: {
-        price: number;
-        percent_change_24h: number;
-        market_cap: number;
-      };
-    };
-  }>;
-}
-
 export default function Home() {
   const [fromCurrency, setFromCurrency] = useState("USDT");
   const [toCurrency, setToCurrency] = useState("ETH");

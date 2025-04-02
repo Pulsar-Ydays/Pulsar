@@ -5,16 +5,45 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function Calculator() {
-  const [gain, setGain] = useState<number | "">("");
-  const [result, setResult] = useState<number | null>(null);
+  const [investissementTotal, setInvestissementTotal] = useState<number | "">(
+    ""
+  );
+  const [valeurPortefeuille, setValeurPortefeuille] = useState<number | "">("");
+  const [valeurCession, setValeurCession] = useState<number | "">("");
+  const [result, setResult] = useState<{
+    montantImposable: number;
+    montantImpots: number;
+  } | null>(null);
 
   const isToken = localStorage.getItem("token");
 
   const calculateTax = () => {
-    if (typeof gain === "number" && gain > 0) {
-      setResult(gain * 0.7); // Calculer après taxes (70% des gains)
+    if (
+      typeof investissementTotal === "number" &&
+      typeof valeurPortefeuille === "number" &&
+      typeof valeurCession === "number"
+    ) {
+      const plusValue = valeurCession - investissementTotal;
+      if (plusValue <= 0) {
+        setResult({
+          montantImposable: 0,
+          montantImpots: 0,
+        });
+      } else if (plusValue <= 305) {
+        setResult({
+          montantImposable: plusValue,
+          montantImpots: 0,
+        });
+      } else {
+        const montantImposable = plusValue;
+        const montantImpots = plusValue * 0.3;
+        setResult({
+          montantImposable,
+          montantImpots,
+        });
+      }
     } else {
-      setResult(null); // Remettre à zéro si l'entrée est invalide
+      setResult(null);
     }
   };
 
@@ -26,39 +55,96 @@ export default function Calculator() {
       {/* Main content */}
 
       {isToken ? (
-        <main className="flex-1 overflow-y-auto p-6 flex flex-col items-center justify-center">
-          <h1 className="font-mono text-3xl font-bold mb-6 text-center">
-            Calculez vos taxes sur les cryptos
+        <main className="flex-1 overflow-y-auto p-6">
+          <h1 className="font-mono text-3xl font-bold mb-8 text-center">
+            Vos investissements en cryptomonnaie
           </h1>
 
-          {/* Input pour les gains */}
-          <div className="flex flex-col items-center gap-4 w-full max-w-md">
-            <input
-              type="number"
-              value={gain}
-              onChange={(e) => setGain(Number(e.target.value) || "")}
-              placeholder="Entrez vos gains"
-              className="font-mono w-full p-3 rounded-md bg-gray-800 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-purple-600 focus:outline-none"
-            />
+          <div className="max-w-2xl mx-auto space-y-6">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Quelle est la valeur totale de vos investissements en crypto ?
+                </label>
+                <input
+                  type="number"
+                  value={investissementTotal}
+                  onChange={(e) =>
+                    setInvestissementTotal(Number(e.target.value) || "")
+                  }
+                  className="font-mono w-full p-3 rounded-md bg-gray-800 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                />
+              </div>
 
-            {/* Bouton de calcul */}
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Quelle est la valeur de votre portefeuille ?
+                </label>
+                <input
+                  type="number"
+                  value={valeurPortefeuille}
+                  onChange={(e) =>
+                    setValeurPortefeuille(Number(e.target.value) || "")
+                  }
+                  className="font-mono w-full p-3 rounded-md bg-gray-800 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Quelle est la valeur de votre cession ?
+                </label>
+                <input
+                  type="number"
+                  value={valeurCession}
+                  onChange={(e) =>
+                    setValeurCession(Number(e.target.value) || "")
+                  }
+                  className="font-mono w-full p-3 rounded-md bg-gray-800 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                />
+              </div>
+            </div>
+
             <button
               onClick={calculateTax}
               className="w-full p-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white font-mono transition-all"
             >
-              Calculer !
+              Calculer
             </button>
-          </div>
 
-          {/* Résultat */}
-          {result !== null && (
-            <div className="mt-6 bg-gray-800 p-4 rounded-lg w-full max-w-md text-center">
-              <h2 className="text-xl font-semibold">
-                Gains après taxes :{" "}
-                <span className="text-purple-400">{result.toFixed(2)}</span>
-              </h2>
-            </div>
-          )}
+            {result !== null && (
+              <div className="mt-8 bg-gray-800 p-6 rounded-lg">
+                <h2 className="text-xl font-semibold mb-4">
+                  Estimation des impôts crypto
+                </h2>
+
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-sm text-gray-400">
+                      Plus-value imposable
+                    </h3>
+                    <p className="text-2xl font-bold text-purple-400">
+                      {result.montantImposable.toFixed(2)} €
+                    </p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm text-gray-400">
+                      Montant d&apos;impôt à payer
+                    </h3>
+                    <p className="text-2xl font-bold text-purple-400">
+                      {result.montantImpots.toFixed(2)} €
+                    </p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm text-gray-400">Flat tax</h3>
+                    <p className="text-2xl font-bold text-purple-400">30 %</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </main>
       ) : (
         <div className="flex flex-col items-center justify-center h-screen w-full">
