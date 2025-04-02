@@ -156,7 +156,7 @@ export default function ProfileForm() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-900 text-white">
+    <div className="flex w-full h-screen bg-gradient-to-b from-[#111827] via-gray-900 to-purple-900">
       {/* Sidebar */}
       <Sidebar />
 

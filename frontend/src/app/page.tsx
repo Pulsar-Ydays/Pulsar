@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { decodeJWT } from "./utils/jwtUtils";
-import { Sidebar } from "@/components/sidebar";
 import { CryptoCard } from "@/components/crypto-card";
+import { Sidebar } from "@/components/sidebar";
 import { StatsCard } from "@/components/stats-card";
-import { Button } from "@/components/ui/button";
 import TransactionInput from "@/components/TransactionInput";
+import { Button } from "@/components/ui/button";
+import { decodeJWT } from "./utils/jwtUtils";
 
-import { Bitcoin, Clock } from "lucide-react";
 import UserStatus from "@/components/ui/userstatus";
+import { Bitcoin, Clock } from "lucide-react";
 
 const mockChartData: { date: string; value: number }[] = [
   { date: "01/01", value: 400 },
@@ -52,7 +52,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex h-screen bg-background bg-gray-900">
+    <div className="flex w-full h-screen bg-gradient-to-b from-[#111827] via-gray-900 to-purple-900">
       <Sidebar />
       <main className="flex-1 overflow-y-auto mt-16 md:mt-0">
         <div className="flex items-center justify-between p-6">

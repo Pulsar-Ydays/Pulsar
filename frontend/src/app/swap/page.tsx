@@ -186,7 +186,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex w-full h-screen bg-gradient-to-b from-black via-gray-900 to-purple-900">
+    <div className="flex w-full h-screen bg-gradient-to-b from-[#111827] via-gray-900 to-purple-900">
       <Sidebar />
       <div className="flex flex-grow justify-center items-center">
         {isToken ? (
