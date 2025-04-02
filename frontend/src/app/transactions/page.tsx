@@ -1,45 +1,39 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Sidebar } from "@/components/sidebar";
 import UserStatus from "@/components/ui/userstatus";
-import TransactionTable from "@/components/ui/transaction-table";
 import Link from "next/link";
 
-//Schema Asset
-type Transactions = {
-  currency: string;
-  qteTransac: string;
-  action: "Buy" | "Sell";
-  profits: string;
-  date_transa: string;
-};
-
-// Données temporaires
-const transactions: Transactions[] = [
-  {
-    currency: "Bitcoin (BTC)",
-    qteTransac: "0.5",
-    action: "Buy",
-    profits: "-54 €",
-    date_transa: "2025-01-28",
-  },
-  {
-    currency: "Ethereum (ETH)",
-    qteTransac: "2",
-    action: "Sell",
-    profits: "+1251,01 €",
-    date_transa: "2025-01-27",
-  },
-  {
-    currency: "Litecoin (LTC)",
-    qteTransac: "1.2",
-    action: "Buy",
-    profits: "-7 €",
-    date_transa: "2025-01-25",
-  },
-];
-
 export default function Transactions() {
+  const searchParams = useSearchParams();
+  const walletId = searchParams.get("walletId");
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      const token = localStorage.getItem("token");
+      if (!walletId || !token) return;
+
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/wallets/${walletId}/transactions`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        const data = await res.json();
+        setTransactions(data);
+      } catch (err) {
+        console.error("Erreur fetch des transactions :", err);
+      }
+    };
+
+    fetchTransactions();
+  }, [walletId]);
+
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
@@ -47,7 +41,7 @@ export default function Transactions() {
         <div className="max-w-full md:px-8">
           <header className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div className="flex">
-              <Link href={"/wallet"} className="font-mono text-3xl md:text-4xl">
+              <Link href="/wallet" className="font-mono text-3xl md:text-4xl">
                 &lt;
               </Link>
               <h1 className="font-mono text-2xl md:text-3xl mb-4 md:mb-0 ml-6">
@@ -57,8 +51,52 @@ export default function Transactions() {
             <UserStatus />
           </header>
 
-          {/* Tableau des transactions */}
-          <TransactionTable transactions={transactions} />
+          {transactions.length > 0 ? (
+            <div className="mt-4 bg-gray-900 rounded-lg p-4">
+              <h2 className="text-white text-xl font-semibold mb-4">
+                Dernières transactions
+              </h2>
+              <table className="w-full text-sm text-white">
+                <thead>
+                  <tr className="text-left border-b border-gray-600">
+                    <th className="py-2">Date</th>
+                    <th>Type</th>
+                    <th>Crypto</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire (€)</th>
+                    <th>Total (€)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transactions.map((tx: any, idx: number) => (
+                    <tr
+                      key={idx}
+                      className="border-b border-gray-700 hover:bg-gray-800 transition"
+                    >
+                      <td className="py-2">
+                        {new Date(tx.createdAt).toLocaleDateString()}
+                      </td>
+                      <td
+                        className={
+                          tx.type === "buy" ? "text-green-400" : "text-red-400"
+                        }
+                      >
+                        {tx.type.toUpperCase()}
+                      </td>
+                      <td>{tx.symbol}</td>
+                      <td>{tx.quantity}</td>
+                      <td>{tx.price.toFixed(2)}</td>
+                      <td>{(tx.price * tx.quantity).toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-white text-center mt-8">
+              Aucune transaction pour ce wallet.
+            </p>
+          )}
         </div>
       </main>
     </div>

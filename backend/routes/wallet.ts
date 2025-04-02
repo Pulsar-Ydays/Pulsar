@@ -39,4 +39,35 @@ router.get(
   }
 );
 
+router.get(
+  "/api/wallets/:walletId/transactions",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    try {
+      const walletId = req.params.walletId;
+
+      const wallet = await mongoose
+        .model("Wallet")
+        .findById(walletId)
+        .populate({
+          path: "transactions",
+          options: { sort: { createdAt: -1 } }, // 🔁 tri par date décroissante
+        });
+
+      if (!wallet) {
+        res.status(404).json({ message: "Wallet non trouvé" });
+        return;
+      }
+
+      res.status(200).json(wallet.transactions);
+    } catch (error: any) {
+      console.error(
+        "Erreur lors de la récupération des transactions du wallet :",
+        error
+      );
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
+
 export default router;

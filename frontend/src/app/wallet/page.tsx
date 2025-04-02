@@ -11,37 +11,48 @@ import WalletInput from "@/components/WalletInput";
 
 import Link from "next/link";
 
+const CRYPTO_ICONS: Record<string, string> = {
+  BTC: "https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=026",
+  ETH: "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026",
+  SOL: "https://cryptologos.cc/logos/solana-sol-logo.png?v=026",
+  ADA: "https://cryptologos.cc/logos/cardano-ada-logo.png?v=026",
+  DOGE: "https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=026",
+};
+
 export default function Wallet() {
-  type Asset = {
-    icon: string;
-    name: string;
-    quantity: string;
-    price: string;
-    balance: string;
-    market: string;
-    color: "green" | "red";
+  type Holding = {
+    symbol: string;
+    amount: number;
+    averageBuyPrice: number;
   };
 
   type Wallet = {
     id: string;
     name: string;
-    assets: Asset[];
+    holdings: Holding[];
   };
 
-  const [isWalletModalOpen, setWalletModalOpen] = useState(false);
+  type Transaction = {
+    symbol: string;
+    type: string;
+    quantity: number;
+    price: number;
+    createdAt: string;
+  };
+
+  // UseState hooks for managing state
   const [isTransactionModalOpen, setTransactionModalOpen] = useState(false);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
+  const [isWalletModalOpen, setWalletModalOpen] = useState(false);
   const [wallets, setWallets] = useState<Wallet[]>([]);
+  const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
 
-  // Fetch wallets de l'utilisateur
   useEffect(() => {
     const fetchWallets = async () => {
       try {
         const userId = localStorage.getItem("userId");
         const token = localStorage.getItem("token");
-
-        console.log("UserID récupéré :", userId); // Vérifie que l'ID est correct
-        console.log("Token récupéré :", token); // Vérifie que le token est bien récupéré
 
         if (!userId || !token) {
           throw new Error("User ID ou Token introuvable");
@@ -64,14 +75,57 @@ export default function Wallet() {
         const walletsData = await response.json();
         console.log("Wallets reçus :", walletsData);
 
-        setWallets(walletsData);
+        const formattedWallets = walletsData.map((w: any) => ({
+          ...w,
+          id: w._id,
+        }));
+
+        setWallets(formattedWallets);
+        if (formattedWallets.length > 0) setSelectedWallet(formattedWallets[0]);
       } catch (error) {
-        console.error("Erreur lors du chargement des wallets :", error);
+        console.error("Erreur chargement wallets:", error);
       }
     };
 
     fetchWallets();
   }, []);
+
+  useEffect(() => {
+    if (wallets.length > 0 && !selectedWallet) setSelectedWallet(wallets[0]);
+  }, [wallets]);
+
+  useEffect(() => {
+    console.log("wallets chargés:", wallets);
+  }, [wallets]);
+
+  //  Get transactions
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      if (!selectedWallet) return;
+
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/wallets/${selectedWallet.id}/transactions`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await res.json();
+        setTransactions(data);
+      } catch (error) {
+        console.error("Erreur lors du fetch des transactions :", error);
+      }
+    };
+
+    fetchTransactions();
+  }, [selectedWallet]);
 
   const addWallet = async (walletName: string) => {
     try {
@@ -104,12 +158,34 @@ export default function Wallet() {
       const newWallet = await response.json();
       console.log("Wallet créé :", newWallet);
 
-      setWallets((prevWallets) => [...prevWallets, newWallet]);
+      setWallets((prevWallets) => [
+        ...prevWallets,
+        { ...newWallet, id: newWallet._id },
+      ]);
       setWalletModalOpen(false);
     } catch (error) {
       console.error("Erreur lors de la création du wallet :", error);
     }
   };
+
+  const walletTotalValue = selectedWallet?.holdings?.reduce(
+    (acc, h) => acc + h.amount * h.averageBuyPrice,
+    0
+  );
+
+  const walletTotalCost = selectedWallet?.holdings?.reduce(
+    (acc, h) => acc + h.amount * h.averageBuyPrice,
+    0
+  );
+
+  const fakeCurrentMarketValue = selectedWallet?.holdings?.reduce(
+    (acc, h) => acc + h.amount * h.averageBuyPrice * 1.02, // 2% au-dessus pour simuler
+    0
+  );
+
+  const percentGain = walletTotalCost
+    ? ((fakeCurrentMarketValue! - walletTotalCost) / walletTotalCost) * 100
+    : 0;
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -123,19 +199,15 @@ export default function Wallet() {
             <UserStatus />
           </header>
 
-          <section className="mb-8">
-            <div className="container mx-auto">
-              <WalletValue
-                totalValue="$65,690.00"
-                percentageChange="10.21%"
-                isPositive={true}
-              />
-            </div>
-          </section>
+          <WalletValue
+            totalValue={`${fakeCurrentMarketValue?.toLocaleString("fr-FR")} €`}
+            percentageChange={`${percentGain.toFixed(2)}%`}
+            isPositive={percentGain >= 0}
+          />
 
-          <div className="flex justify-center items-center mb-6 md:justify-start">
+          <div className="flex items-center mb-6 gap-4">
             <button
-              className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm"
+              className="btn-primary px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full text-white"
               onClick={() => setTransactionModalOpen(true)}
             >
               Ajouter une transaction
@@ -143,64 +215,210 @@ export default function Wallet() {
 
             <button
               onClick={() => setWalletModalOpen(true)}
-              className="ml-6 btn-primary"
+              className="text-white hover:text-purple-400"
             >
               Ajouter un wallet +
             </button>
 
-            {/* Affichage des wallets de l'utilisateur */}
-            {wallets.length > 0 ? (
-              wallets.map((wallet) => (
-                <div
-                  key={wallet.id}
-                  className="mb-6 p-4 border rounded bg-gray-800 text-white"
-                >
-                  <h2 className="text-xl font-semibold">{wallet.name}</h2>
-                  {wallet.assets && wallet.assets.length > 0 ? (
-                    <Wallettable assets={wallet.assets} />
-                  ) : (
-                    <p className="text-gray-400">Aucun actif dans ce wallet.</p>
-                  )}
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-400">Aucun wallet trouvé.</p>
-            )}
+            <select
+              className="ml-4 px-4 py-2 bg-gray-800 text-white rounded"
+              value={selectedWallet?.id || ""}
+              onChange={(e) => {
+                const wallet = wallets.find((w) => w.id === e.target.value);
+                setSelectedWallet(wallet || null);
+              }}
+            >
+              <option value="" disabled>
+                Sélectionner un wallet
+              </option>
+              {wallets.map((wallet) => (
+                <option key={wallet.id} value={wallet.id}>
+                  {wallet.name}
+                </option>
+              ))}
+            </select>
 
             <Link
-              href="/transactions"
-              className="ml-20 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm"
+              href={`/transactions?walletId=${selectedWallet?.id}`}
+              className="ml-auto text-white font-bold py-2 px-4 rounded-full hover:bg-purple-600 transition"
             >
               Mes transactions
             </Link>
-            {isWalletModalOpen && (
-              <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                <div className="bg-[#1A1A1D] p-6 rounded-lg max-w-md w-full">
-                  <button
-                    onClick={() => setWalletModalOpen(false)}
-                    className="text-white"
-                  >
-                    X
-                  </button>
-                  <WalletInput onWalletCreate={addWallet} />
-                </div>
-              </div>
-            )}
-
-            {isTransactionModalOpen && (
-              <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                <div className="bg-[#1A1A1D] p-6 rounded-lg max-w-md w-full">
-                  <button
-                    onClick={() => setTransactionModalOpen(false)}
-                    className="text-white"
-                  >
-                    X
-                  </button>
-                  <TransactionInput />
-                </div>
-              </div>
-            )}
           </div>
+
+          {/* Résumé par crypto */}
+          {selectedWallet &&
+            transactions.length > 0 &&
+            (() => {
+              const summaryMap = new Map<
+                string,
+                { totalQuantity: number; totalValue: number }
+              >();
+
+              transactions.forEach((tx) => {
+                const key = tx.symbol;
+                const existing = summaryMap.get(key);
+                const quantity =
+                  tx.type === "buy" || tx.type === "deposit"
+                    ? tx.quantity
+                    : -tx.quantity;
+                const value = quantity * tx.price;
+
+                if (existing) {
+                  existing.totalQuantity += quantity;
+                  existing.totalValue += value;
+                } else {
+                  summaryMap.set(key, {
+                    totalQuantity: quantity,
+                    totalValue: value,
+                  });
+                }
+              });
+
+              const summary = Array.from(summaryMap.entries());
+
+              return (
+                <div className="mt-8 p-4 rounded bg-gray-900 text-white">
+                  <h2 className="text-xl font-semibold mb-4">
+                    Avoirs par crypto
+                  </h2>
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-left border-b border-gray-600">
+                        <th className="py-2">Crypto</th>
+                        <th>Quantité</th>
+                        <th>Valeur totale (€)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {summary.map(([symbol, data], idx) => (
+                        <tr
+                          key={idx}
+                          className="border-b border-gray-700 hover:bg-gray-800 transition"
+                        >
+                          <td className="py-2 font-medium flex items-center gap-2">
+                            {CRYPTO_ICONS[symbol] && (
+                              <img
+                                src={CRYPTO_ICONS[symbol]}
+                                alt={symbol}
+                                className="w-5 h-5"
+                              />
+                            )}
+                            {symbol}
+                          </td>
+                          <td
+                            className={
+                              data.totalQuantity >= 0
+                                ? "text-green-400"
+                                : "text-red-400"
+                            }
+                          >
+                            {data.totalQuantity.toFixed(6)}
+                          </td>
+                          <td>
+                            {data.totalValue.toLocaleString("fr-FR", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}{" "}
+                            €
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              );
+            })()}
+
+          {/* Affichage temporaire de transactions */}
+          {/* {transactions.length > 0 && (
+            <div className="mt-8 p-4 rounded bg-gray-900 text-white">
+              <h2 className="text-xl font-semibold mb-4">
+                Dernières transactions
+              </h2>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left border-b border-gray-600">
+                    <th className="py-2">Date</th>
+                    <th>Type</th>
+                    <th>Crypto</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire (€)</th>
+                    <th>Total (€)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transactions.map((tx, idx) => (
+                    <tr
+                      key={idx}
+                      className="border-b border-gray-700 hover:bg-gray-800 transition"
+                    >
+                      <td className="py-2">
+                        {new Date(tx.createdAt).toLocaleDateString()}
+                      </td>
+                      <td
+                        className={
+                          tx.type === "buy" ? "text-green-400" : "text-red-400"
+                        }
+                      >
+                        {tx.type.toUpperCase()}
+                      </td>
+                      <td>{tx.symbol}</td>
+                      <td>{tx.quantity}</td>
+                      <td>{tx.price.toFixed(2)}</td>
+                      <td>{(tx.price * tx.quantity).toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )} */}
+
+          {isWalletModalOpen && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+              onClick={() => setWalletModalOpen(false)}
+            >
+              <div
+                className="bg-[#1A1A1D] p-6 rounded-lg max-w-md w-full relative"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setWalletModalOpen(false)}
+                  className="absolute top-2 right-2 text-white text-xl"
+                >
+                  ×
+                </button>
+                <WalletInput onWalletCreate={addWallet} />
+              </div>
+            </div>
+          )}
+
+          {isTransactionModalOpen && selectedWallet && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+              onClick={() => setTransactionModalOpen(false)}
+            >
+              <div
+                className="bg-[#1A1A1D] p-6 rounded-lg max-w-md w-full relative"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setTransactionModalOpen(false)}
+                  className="absolute top-2 right-2 text-white text-xl"
+                >
+                  ×
+                </button>
+                <TransactionInput
+                  walletId={selectedWallet.id}
+                  onTransactionAdded={() => {
+                    setTransactionModalOpen(false);
+                    // Optionally refresh wallets or selectedWallet data here
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>

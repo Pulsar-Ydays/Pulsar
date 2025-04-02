@@ -408,7 +408,16 @@ export default function Cryptos() {
       const usdData =
         crypto.quote && crypto.quote.USD
           ? crypto.quote.USD
-          : { price: 0, percent_change_24h: 0, market_cap: 0 };
+          : {
+              price: 0,
+              percent_change_24h: 0,
+              percent_change_1h: 0,
+              percent_change_7d: 0,
+              percent_change_30d: 0,
+              percent_change_60d: 0,
+              percent_change_90d: 0,
+              market_cap: 0,
+            };
 
       return {
         id: crypto.slug || String(crypto.id), // Utiliser slug ou convertir l'ID numérique en string
