@@ -1,6 +1,7 @@
 "use client";
 
 import { Sidebar } from "@/components/sidebar";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function Home() {
@@ -16,6 +17,8 @@ export default function Home() {
     setToAmount(fromAmount);
   };
 
+  const isToken = localStorage.getItem("token");
+
   const currencyIcons = {
     USDT: "../USDT.png",
     ETH: "../Eth.png",
@@ -26,91 +29,102 @@ export default function Home() {
     <div className="flex w-full h-screen bg-gradient-to-b from-black via-gray-900 to-purple-900">
       <Sidebar />
       <div className="flex flex-grow justify-center items-center">
-        <div className="relative flex flex-col max-w-md w-full bg-purple-800 bg-opacity-30 p-8 rounded-lg text-white shadow-lg">
-          <h1 className="font-mono text-xl font-semibold mb-6">Swap</h1>
-          <div className="w-full">
-            <label htmlFor="from" className="block mb-2 text-sm">
-              From
-            </label>
-            <div className="flex items-center space-x-4 bg-purple-900 py-2 px-4 rounded-lg">
-              <img
-                src={currencyIcons[fromCurrency]}
-                alt={fromCurrency}
-                className="w-10 h-10"
-              />
-              <select
-                id="from"
-                value={fromCurrency}
-                onChange={(e) => setFromCurrency(e.target.value)}
-                className="bg-purple-900 text-white flex-1 focus:outline-none appearance-none rounded-lg"
-              >
-                <option className="bg-purple-700 text-white">USDT</option>
-                <option className="bg-purple-700 text-white">ETH</option>
-                <option className="bg-purple-700 text-white">BTC</option>
-              </select>
-              <input
-                type="number"
-                value={fromAmount}
-                onChange={(e) => setFromAmount(e.target.value)}
-                placeholder="0.00"
-                className="bg-transparent text-right text-white flex-1 focus:outline-none w-full min-w-0"
-              />
-            </div>
-          </div>
-          <div className="flex justify-center my-4">
-            <button
-              onClick={handleSwap}
-              className="bg-purple-700 p-3 rounded-full transform hover:rotate-180 transition duration-300"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                className="w-6 h-6 text-white"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m0 0l5.25-5.25M12 19.5l-5.25-5.25"
+        {isToken ? (
+          <div className="relative flex flex-col max-w-md w-full bg-purple-800 bg-opacity-30 p-8 rounded-lg text-white shadow-lg">
+            <h1 className="font-mono text-xl font-semibold mb-6">Swap</h1>
+            <div className="w-full">
+              <label htmlFor="from" className="block mb-2 text-sm">
+                From
+              </label>
+              <div className="flex items-center space-x-4 bg-purple-900 py-2 px-4 rounded-lg">
+                <img
+                  src={currencyIcons[fromCurrency]}
+                  alt={fromCurrency}
+                  className="w-10 h-10"
                 />
-              </svg>
+                <select
+                  id="from"
+                  value={fromCurrency}
+                  onChange={(e) => setFromCurrency(e.target.value)}
+                  className="bg-purple-900 text-white flex-1 focus:outline-none appearance-none rounded-lg"
+                >
+                  <option className="bg-purple-700 text-white">USDT</option>
+                  <option className="bg-purple-700 text-white">ETH</option>
+                  <option className="bg-purple-700 text-white">BTC</option>
+                </select>
+                <input
+                  type="number"
+                  value={fromAmount}
+                  onChange={(e) => setFromAmount(e.target.value)}
+                  placeholder="0.00"
+                  className="bg-transparent text-right text-white flex-1 focus:outline-none w-full min-w-0"
+                />
+              </div>
+            </div>
+            <div className="flex justify-center my-4">
+              <button
+                onClick={handleSwap}
+                className="bg-purple-700 p-3 rounded-full transform hover:rotate-180 transition duration-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="w-6 h-6 text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m0 0l5.25-5.25M12 19.5l-5.25-5.25"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="w-full">
+              <label htmlFor="to" className="block mb-2 text-sm">
+                To
+              </label>
+              <div className="flex items-center space-x-4 bg-purple-900 py-2 px-4 rounded-lg">
+                <img
+                  src={currencyIcons[toCurrency]}
+                  alt={toCurrency}
+                  className="w-10 h-10"
+                />
+                <select
+                  id="to"
+                  value={toCurrency}
+                  onChange={(e) => setToCurrency(e.target.value)}
+                  className="bg-purple-900 text-white flex-1 focus:outline-none appearance-none rounded-lg"
+                >
+                  <option className="bg-purple-700 text-white">USDT</option>
+                  <option className="bg-purple-700 text-white">ETH</option>
+                  <option className="bg-purple-700 text-white">BTC</option>
+                </select>
+                <input
+                  type="number"
+                  value={toAmount}
+                  onChange={(e) => setToAmount(e.target.value)}
+                  placeholder="0.00"
+                  className="bg-transparent text-right text-white flex-1 focus:outline-none maw-w-0 w-full"
+                />
+              </div>
+            </div>
+            <button className="font-mono mt-6 w-full bg-purple-600 py-2 rounded-lg text-white font-semibold hover:bg-purple-700 transition">
+              Swap
             </button>
           </div>
-          <div className="w-full">
-            <label htmlFor="to" className="block mb-2 text-sm">
-              To
-            </label>
-            <div className="flex items-center space-x-4 bg-purple-900 py-2 px-4 rounded-lg">
-              <img
-                src={currencyIcons[toCurrency]}
-                alt={toCurrency}
-                className="w-10 h-10"
-              />
-              <select
-                id="to"
-                value={toCurrency}
-                onChange={(e) => setToCurrency(e.target.value)}
-                className="bg-purple-900 text-white flex-1 focus:outline-none appearance-none rounded-lg"
-              >
-                <option className="bg-purple-700 text-white">USDT</option>
-                <option className="bg-purple-700 text-white">ETH</option>
-                <option className="bg-purple-700 text-white">BTC</option>
-              </select>
-              <input
-                type="number"
-                value={toAmount}
-                onChange={(e) => setToAmount(e.target.value)}
-                placeholder="0.00"
-                className="bg-transparent text-right text-white flex-1 focus:outline-none maw-w-0 w-full"
-              />
-            </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-screen w-full">
+            <h1>Vous devez être connecté pour accéder à cette page</h1>
+            <Link href="/register" className="mt-4">
+              <button className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm">
+                Se connecter
+              </button>
+            </Link>
           </div>
-          <button className="font-mono mt-6 w-full bg-purple-600 py-2 rounded-lg text-white font-semibold hover:bg-purple-700 transition">
-            Swap
-          </button>
-        </div>
+        )}
       </div>
     </div>
   );
