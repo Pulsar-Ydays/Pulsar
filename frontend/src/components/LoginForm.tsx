@@ -3,16 +3,29 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+import { useState } from "react";
+
+//Zod utilisé pou verififier les shemas
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z.string().email("Email invalide"),
+  password: z
+    .string()
+    .min(6, "Le mot de passe doit comporter au moins 6 caractères"),
 });
 
 export default function LoginForm() {
+  // Gestion du formulaire
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -21,8 +34,41 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Login data:", data);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const onSubmit = async (data: any) => {
+    try {
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(
+          result.error || "Échec de l'authentification. Veuillez réessayer."
+        );
+        return;
+      }
+
+      // On stock dans le local Storage
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("userId", result.userId);
+      localStorage.setItem("user", JSON.stringify({ name: result.userName }));
+      alert("Vous êtes connecté avec succès!");
+
+      // Redirection vers overview
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Une erreur inattendue s'est produite :", error);
+      setErrorMessage(
+        "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
+      );
+    }
   };
 
   return (
@@ -31,8 +77,15 @@ export default function LoginForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6 flex flex-col items-center w-full max-w-md p-6 bg-[#1A1A1D] bg-opacity-90 shadow-xl rounded-lg"
       >
-        <h1 className="text-3xl font-extrabold text-white">Sign In</h1>
-        
+        {/* Titre */}
+        <h1 className="text-3xl font-extrabold text-white">Connexion</h1>
+
+        {/* Affichage des erreurs globales */}
+        {errorMessage && (
+          <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
+        )}
+
+        {/* Champ Email */}
         <FormField
           control={form.control}
           name="email"
@@ -41,44 +94,47 @@ export default function LoginForm() {
               <FormLabel className="text-gray-300">Email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="examplee@domain.com"
+                  placeholder="example@domain.com"
                   {...field}
-                   className="bg-[#2A0140] text-gray-200 border border-transparent focus:border-[#FF4DFF] focus:ring-2 focus:ring-[#FF4DFF] focus:outline-none focus:ring-offset-2 rounded-md transition-all"
+                  className="bg-[#2A0140] text-gray-200 border border-transparent focus:border-[#FF4DFF] focus:ring-2 focus:ring-[#FF4DFF] focus:outline-none focus:ring-offset-2 rounded-md transition-all"
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage /> {/* Affichage des erreurs de validation */}
             </FormItem>
           )}
         />
 
+        {/* Champ Password */}
         <FormField
           control={form.control}
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-300">Password</FormLabel>
+              <FormLabel className="text-gray-300">Mot de passe</FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder="Votre mot de passe"
                   {...field}
-                   className="bg-[#2A0140] text-gray-200 border border-transparent focus:border-[#FF4DFF] focus:ring-2 focus:ring-[#FF4DFF] focus:outline-none focus:ring-offset-2 rounded-md transition-all"
+                  className="bg-[#2A0140] text-gray-200 border border-transparent focus:border-[#FF4DFF] focus:ring-2 focus:ring-[#FF4DFF] focus:outline-none focus:ring-offset-2 rounded-md transition-all"
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage /> {/* Affichage des erreurs de validation */}
             </FormItem>
           )}
         />
 
+        {/* Lien oublié mot de passe */}
         <a href="#" className="text-xs text-[#FF4DFF] hover:underline mt-2">
-          Forgot your password?
+          Mot de passe oublié ?
         </a>
 
+        {/* Bouton de soumission */}
         <Button
           type="submit"
           className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-2 uppercase tracking-wider shadow-md"
         >
-          Sign In
+          Connexion
         </Button>
       </form>
     </Form>

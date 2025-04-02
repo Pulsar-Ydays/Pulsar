@@ -14,13 +14,13 @@ connectDB(process.env.MONGODB_URL!).then();
 const app = express();
 
 // Configuration de CORS
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: process.env.CLIENT_URL || "http://localhost:3001",
+  méthode: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(routerUser);
 app.use(routerTransac);
