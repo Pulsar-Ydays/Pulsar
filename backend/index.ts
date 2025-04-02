@@ -1,16 +1,25 @@
+import cors from "cors";
 import dotenv from "dotenv";
-import { connectDB } from "./connect_db";
 import express from "express";
-import routerUser from "./routes/user";
-import routerTransac from "./routes/transac";
-import routerWallet from "./routes/wallet";
+import { connectDB } from "./connect_db";
 import routerMarket from "./routes/market";
+import routerTransac from "./routes/transac";
+import routerUser from "./routes/user";
+import routerWallet from "./routes/wallet";
 import { setupSwagger } from "./swagger";
 
 dotenv.config();
 
 connectDB(process.env.MONGODB_URL!).then();
 const app = express();
+
+// Configuration de CORS
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(routerUser);
