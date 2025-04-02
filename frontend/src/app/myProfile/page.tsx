@@ -1,22 +1,20 @@
 "use client";
 
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { useState, useEffect, useRef } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { Sidebar } from "@/components/sidebar";
+import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Sidebar } from "@/components/sidebar";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function ProfileForm() {
   const [error, setError] = useState<string | null>(null);
@@ -236,7 +234,7 @@ export default function ProfileForm() {
                 Update Profile
               </Button>
 
-              <Link href="/Register">
+              <Link href="/register">
                 <Button
                   className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
                   onClick={() => {

@@ -1,15 +1,15 @@
-import { Request, Response, Router } from "express";
-import { createUser } from "../API/user/createUser";
-import { getAllUsers } from "../API/user/getAllUser";
-import { updateUser } from "../API/user/updateUser";
-import { deleteUser } from "../API/user/deleteUser";
-import mongoose from "mongoose";
-import { getUser } from "../API/user/getUser";
 import bcrypt from "bcrypt";
-import User from "../model/userModel";
+import { Request, Response, Router } from "express";
 import jwt from "jsonwebtoken";
-import { verifyToken } from "../middleware/authMiddleware";
+import mongoose from "mongoose";
+import { createUser } from "../API/user/createUser";
+import { deleteUser } from "../API/user/deleteUser";
+import { getAllUsers } from "../API/user/getAllUser";
+import { getUser } from "../API/user/getUser";
+import { updateUser } from "../API/user/updateUser";
 import { createWallet } from "../API/wallet/createWallet";
+import { verifyToken } from "../middleware/authMiddleware";
+import User from "../model/userModel";
 
 const router = Router();
 
@@ -336,5 +336,7 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
     res.status(500).json({ error: "Login failed" });
   }
 });
+
+// si l'utilisateur ne bouge pas pendant 10 minutes, il est déconnecté
 
 export default router;
