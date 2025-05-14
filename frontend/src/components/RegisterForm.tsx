@@ -15,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 // Schéma de validation
 const registerSchema = z.object({
@@ -44,6 +46,7 @@ export default function RegisterForm() {
     },
   });
 
+  const router = useRouter();
   const onSubmit = async (data: RegisterFormData) => {
     setErrorMessage("");
     setSuccessMessage("");
@@ -63,9 +66,11 @@ export default function RegisterForm() {
 
       const result = await response.json();
       setSuccessMessage("Utilisateur créé avec succès !");
+
       console.log("User created:", result);
 
       form.reset();
+      router.push("/");
     } catch (error: any) {
       setErrorMessage(error.message || "Une erreur est survenue.");
     }

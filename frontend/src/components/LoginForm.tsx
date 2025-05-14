@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 //Zod utilisé pou verififier les shemas
@@ -37,7 +37,7 @@ export default function LoginForm() {
 
   const { t } = useTranslation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const router = useRouter(); 
   const onSubmit = async (data: any) => {
     try {
       const response = await fetch("http://localhost:3000/login", {
@@ -63,7 +63,7 @@ export default function LoginForm() {
       alert("Vous êtes connecté avec succès!");
 
       // Redirection vers overview
-      window.location.href = "/";
+      router.push("/");
     } catch (error) {
       console.error("Une erreur inattendue s'est produite :", error);
       setErrorMessage(
