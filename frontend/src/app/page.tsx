@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { decodeJWT } from "./utils/jwtUtils";
-import { Sidebar } from "@/components/sidebar";
 import { CryptoCard } from "@/components/crypto-card";
+import { Sidebar } from "@/components/sidebar";
 import { StatsCard } from "@/components/stats-card";
-import { Button } from "@/components/ui/button";
 import TransactionInput from "@/components/TransactionInput";
 import i18n from '../lib/i18n';
 import { I18nextProvider } from 'react-i18next';
+import { Button } from "@/components/ui/button";
+import { decodeJWT } from "./utils/jwtUtils";
 
-import { Bitcoin, Clock } from "lucide-react";
 import UserStatus from "@/components/ui/userstatus";
 import { useTranslation } from 'react-i18next';
+import { Bitcoin, Clock } from "lucide-react";
 
 const mockChartData: { date: string; value: number }[] = [
   { date: "01/01", value: 400 },
@@ -47,7 +47,8 @@ export default function Home() {
         const decoded: any = decodeJWT(token);
         if (decoded) {
           setUsername(decoded.username || "User");
-          setUserId(decoded.userId); // Recup l'ID user stocké dans le JWT
+          localStorage.setItem("user", decoded.username);
+          setUserId(decoded.userId);
         }
       } catch (error) {
         console.error("Invalid token", error);
@@ -56,21 +57,19 @@ export default function Home() {
   }, []);
 
   return (
-    <I18nextProvider i18n={i18n}>
-    <div className="flex h-screen bg-background bg-gray-900">
+    <div className="flex w-full h-screen bg-gradient-to-b from-[#111827] via-gray-900 to-purple-900">
+
       <Sidebar />
-      <main className="flex-1 overflow-y-auto mt-16 md:mt-0"> 
+      <main className="flex-1 overflow-y-auto mt-16 md:mt-0">
         <div className="flex items-center justify-between p-6">
           <h1 className="font-mono text-3xl font-bold">Overview</h1>
           <div className="flex items-center gap-4">
-
             <div className="flex items-center gap-2 bg-secondary rounded-full px-4 py-2">
               <Clock className="h-4 w-4" />
               <span className="text-sm">0.0123 ETH</span>
               <div className="bg-background/20 px-2 py-0.5 rounded text-xs">
-                {username || "User"}
+                <UserStatus />
               </div>
-
             </div>
           </div>
         </div>
@@ -118,14 +117,14 @@ export default function Home() {
               gradient="taskDone"
             />
           </div>
-            <div className="add">
+          {/* <div className="add">
               <button
                 className="px-4 py-2 mt-5 md:px-6 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm"
                 onClick={openModal}
               >
                 {t('add_my_crypto')}
               </button>
-            </div>
+            </div> */}
         </div>
       </main>
       {/* Modal */}

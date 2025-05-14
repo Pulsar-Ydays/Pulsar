@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    walletId: {
+        type: Array,
+        required: true
     }
 }, { timestamps: true });
 

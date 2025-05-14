@@ -4,17 +4,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from 'react-i18next';
 import * as z from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import { useState } from "react";
 
 //Zod utilisé pou verififier les shemas
@@ -60,10 +64,13 @@ export default function LoginForm() {
       // On stock dans le local Storage
       localStorage.setItem("token", result.token);
       localStorage.setItem("userId", result.userId);
-      alert("Vous êtes connecté avec succès!");
+      localStorage.setItem("user", JSON.stringify({ name: result.userName }));
+      setErrorMessage("Vous êtes connecté avec succès!");
 
       // Redirection vers overview
-      router.push("/");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
     } catch (error) {
       console.error("Une erreur inattendue s'est produite :", error);
       setErrorMessage(
@@ -82,9 +89,7 @@ export default function LoginForm() {
         <h1 className="text-3xl font-extrabold text-white">{t('sign_in')}</h1>
 
         {/* Affichage des erreurs globales */}
-        {errorMessage && (
-          <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
-        )}
+        {errorMessage && <div className=" text-sm mb-4">{errorMessage}</div>}
 
         {/* Champ Email */}
         <FormField

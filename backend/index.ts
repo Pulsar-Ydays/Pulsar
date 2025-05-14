@@ -1,10 +1,13 @@
-import dotenv from "dotenv";
-import { connectDB } from "./connect_db";
-import express from "express";
-import routerUser from "./routes/user";
-import routerTransac from "./routes/transac";
-import { setupSwagger } from "./swagger";
 import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
+import { connectDB } from "./connect_db";
+import routerMarket from "./routes/market";
+import routerTransac from "./routes/transac";
+import routerUser from "./routes/user";
+import routerWallet from "./routes/wallet";
+import { setupSwagger } from "./swagger";
+
 dotenv.config();
 
 connectDB(process.env.MONGODB_URL!).then();
@@ -21,6 +24,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(routerUser);
 app.use(routerTransac);
+app.use(routerWallet);
+app.use(routerMarket);
 
 // Configuration de Swagger
 setupSwagger(app);

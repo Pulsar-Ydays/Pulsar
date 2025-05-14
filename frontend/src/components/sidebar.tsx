@@ -9,12 +9,24 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import LanguageSwitcher from "./LanguageSwitcher";
+import {
+  Activity,
+  Calculator,
+  CoinsIcon,
+  LayoutDashboard,
+  User,
+  Wallet,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 // Vérification de la présence du token
 const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
 const sidebarItems = [
-  { name: "Profil", icon: User, href: token ? "/myProfile" : "/Register" },
+  { name: "Profil", icon: User, href: token ? "/myProfile" : "/register" },
   { name: "Overview", icon: LayoutDashboard, href: "/" },
   { name: "Wallet", icon: Wallet, href: "/wallet" },
   { name: "Swap", icon: CoinsIcon, href: "/swap" },
@@ -29,7 +41,10 @@ export function Sidebar() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -44,20 +59,25 @@ export function Sidebar() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 sm:hidden rounded-md text-white bg-purple-700 p-2"
+        className="fixed top-4 left-4 z-50 sm:hidden rounded-md text-white"
       >
         ☰
       </button>
-
       <div
         ref={sidebarRef}
-        className={`fixed top-0 left-0 h-screen bg-card border-r border-purple-800 pt-16 transform ${
+        className={`fixed top-0 left-0 h-screen z-50 bg-card border-r border-purple-800 pt-16 transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 sm:static sm:translate-x-0 w-64 max-w-[80%] sm:w-72 lg:w-80 z-50 max-h-screen overflow-y-auto flex flex-col`}
       >
         {/* Logo et éléments du menu */}
         <div className="absolute left-4 top-4 flex items-center gap-2">
-          <Image src={"/Logo_Pulsar.png"} alt="Logo" width={50} height={50} className="rounded-full" />
+          <Image
+            src={"/Logo_Pulsar.png"}
+            alt="Logo"
+            width={50}
+            height={50}
+            className="rounded-full"
+          />
           <span className="font-mono text-xl text-white">Pulsar</span>
         </div>
         
