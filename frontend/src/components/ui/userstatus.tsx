@@ -1,3 +1,10 @@
+
+import { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
+const UserStatus = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
+  const { t } = useTranslation();
 import { useState, useEffect } from "react";
 
 const UserStatus = () => {

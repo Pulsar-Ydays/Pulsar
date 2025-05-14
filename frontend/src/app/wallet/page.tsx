@@ -6,6 +6,7 @@ import WalletValue from "@/components/ui/walletvalue";
 import { useEffect, useState } from "react";
 
 import TransactionInput from "@/components/TransactionInput";
+import { useTranslation } from "react-i18next";
 import WalletInput from "@/components/WalletInput";
 
 import Link from "next/link";
@@ -70,7 +71,6 @@ export default function Wallet() {
         if (!response.ok) {
           throw new Error(`Erreur HTTP : ${response.status}`);
         }
-
         const walletsData = await response.json();
         console.log("Wallets reçus :", walletsData);
 
@@ -97,11 +97,14 @@ export default function Wallet() {
     console.log("wallets chargés:", wallets);
   }, [wallets]);
 
+   const [isModalOpen, setModalOpen] = useState(false);
+    const openModal = () => setModalOpen(true);
+    const closeModal = () => setModalOpen(false);
+    const { t } = useTranslation();
   //  Get transactions
   useEffect(() => {
     const fetchTransactions = async () => {
       if (!selectedWallet) return;
-
       const token = localStorage.getItem("token");
       if (!token) return;
 

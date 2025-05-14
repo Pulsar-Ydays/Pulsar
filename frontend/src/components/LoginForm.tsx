@@ -1,5 +1,9 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from 'react-i18next';
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,10 +14,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { useState } from "react";
 
 //Zod utilisé pou verififier les shemas
@@ -34,8 +39,9 @@ export default function LoginForm() {
     },
   });
 
+  const { t } = useTranslation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const router = useRouter(); 
   const onSubmit = async (data: any) => {
     try {
       const response = await fetch("http://localhost:3000/login", {
@@ -64,7 +70,7 @@ export default function LoginForm() {
       // Redirection vers overview
       setTimeout(() => {
         window.location.href = "/";
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.error("Une erreur inattendue s'est produite :", error);
       setErrorMessage(
@@ -80,7 +86,7 @@ export default function LoginForm() {
         className="space-y-6 flex flex-col items-center w-full max-w-md p-6 bg-[#1A1A1D] bg-opacity-90 shadow-xl rounded-lg"
       >
         {/* Titre */}
-        <h1 className="text-3xl font-extrabold text-white">Connexion</h1>
+        <h1 className="text-3xl font-extrabold text-white">{t('sign_in')}</h1>
 
         {/* Affichage des erreurs globales */}
         {errorMessage && <div className=" text-sm mb-4">{errorMessage}</div>}
@@ -91,7 +97,7 @@ export default function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-300">Email</FormLabel>
+              <FormLabel className="text-gray-300">{t('email')}</FormLabel>
               <FormControl>
                 <Input
                   placeholder="example@domain.com"
@@ -110,7 +116,7 @@ export default function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-300">Mot de passe</FormLabel>
+              <FormLabel className="text-gray-300">{t('paasword')}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
@@ -126,7 +132,7 @@ export default function LoginForm() {
 
         {/* Lien oublié mot de passe */}
         <a href="#" className="text-xs text-[#FF4DFF] hover:underline mt-2">
-          Mot de passe oublié ?
+          {t('forgotten_password')}
         </a>
 
         {/* Bouton de soumission */}
@@ -134,7 +140,7 @@ export default function LoginForm() {
           type="submit"
           className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-2 uppercase tracking-wider shadow-md"
         >
-          Connexion
+          {t('sign_in')}
         </Button>
       </form>
     </Form>

@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/footer";
 import { Sidebar } from "@/components/sidebar";
 import priceMarket from "@/lib/utils";
 import Link from "next/link";

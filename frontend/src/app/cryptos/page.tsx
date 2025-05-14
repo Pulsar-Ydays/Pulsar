@@ -2,6 +2,7 @@
 
 import { Sidebar } from "@/components/sidebar";
 import { StatsCard } from "@/components/stats-card";
+import { useTranslation } from 'react-i18next';
 import priceMarket from "@/lib/utils";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
@@ -80,6 +81,7 @@ const gradients = {
 };
 
 export default function Cryptos() {
+  const { t } = useTranslation();
   const [actualites, setActualites] = useState<CryptoArticle[]>([]);
   const [marketData, setMarketData] = useState<CryptoMarketData[]>([]);
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(
@@ -625,7 +627,6 @@ export default function Cryptos() {
                 </div>
               )}
           </div>
-
           {/* Section pour afficher le graphique */}
           {isLoading ? (
             <div className="text-center py-10 bg-gray-800 rounded-lg">
