@@ -313,7 +313,7 @@ export default function Home() {
                   </div>
                   {toAmount && (
                     <div className="mt-2 text-sm text-gray-300">
-                      <p>Valeur: {getToAmountUSD()} USD</p>
+                      <p>{t('value')}: {getToAmountUSD()} USD</p>
                     </div>
                   )}
                 </div>
