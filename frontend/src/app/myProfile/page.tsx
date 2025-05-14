@@ -14,8 +14,10 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from 'react-i18next';
 
 export default function ProfileForm() {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm({
@@ -168,7 +170,7 @@ export default function ProfileForm() {
           >
             {/* Title */}
             <h1 className="text-4xl font-extrabold text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-              My Profile
+              {t('my_profile')}
             </h1>
 
             <div className="w-full">
@@ -180,10 +182,10 @@ export default function ProfileForm() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[#A0AEC0] font-medium tracking-wider uppercase text-sm">Name</FormLabel>
+                      <FormLabel className="text-[#A0AEC0] font-medium tracking-wider uppercase text-sm">{t('name')}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Your name"
+                          placeholder={t('your_name')}
                           {...field}
                           className="w-full p-4 bg-[#2C2C3E] text-[#E2E8F0] border border-[#3A3A4E] rounded-xl focus:border-[#6A5ACD] focus:ring-2 focus:ring-[#6A5ACD]/50 focus:outline-none transition-all duration-300 ease-in-out"
                         />
@@ -199,10 +201,10 @@ export default function ProfileForm() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[#A0AEC0] font-medium tracking-wider uppercase text-sm">Email</FormLabel>
+                      <FormLabel className="text-[#A0AEC0] font-medium tracking-wider uppercase text-sm">{t('email')}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="example@domain.com"
+                          placeholder={t('example')}
                           {...field}
                           className="w-full p-4 bg-[#2C2C3E] text-[#E2E8F0] border border-[#3A3A4E] rounded-xl focus:border-[#6A5ACD] focus:ring-2 focus:ring-[#6A5ACD]/50 focus:outline-none transition-all duration-300 ease-in-out"
                         />
@@ -218,11 +220,11 @@ export default function ProfileForm() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[#A0AEC0] font-medium tracking-wider uppercase text-sm">Password</FormLabel>
+                      <FormLabel className="text-[#A0AEC0] font-medium tracking-wider uppercase text-sm">{t('password')}</FormLabel>
                       <FormControl>
                         <Input
                           type="password"
-                          placeholder="Your password"
+                          placeholder={t('your_password')}
                           {...field}
                           className="w-full p-4 bg-[#2C2C3E] text-[#E2E8F0] border border-[#3A3A4E] rounded-xl focus:border-[#6A5ACD] focus:ring-2 focus:ring-[#6A5ACD]/50 focus:outline-none transition-all duration-300 ease-in-out"
                         />
@@ -239,14 +241,14 @@ export default function ProfileForm() {
               <Button
                 className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
               >
-                Data Policy
+                {t('data_policy')}
               </Button>
             </Link>
               <Button
                 type="submit"
                 className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
               >
-                Update Profile
+                {t('update_profile')}
               </Button>
 
               <Link href="/register">
@@ -257,7 +259,7 @@ export default function ProfileForm() {
                     localStorage.removeItem("userId");
                   }}
                 >
-                  Déconnexion
+                  {t('disconnection')}
                 </Button>
               </Link>
 
@@ -265,7 +267,7 @@ export default function ProfileForm() {
                 className="bg-red-600 hover:bg-red-800 text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
                 onClick={deleteUser}
               >
-                Supprimer le compte
+                {t('delete_account')}
               </Button>
             </div>
           </form>
