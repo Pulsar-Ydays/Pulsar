@@ -142,6 +142,5 @@ export default function Home() {
         </div>
       )}
     </div>
-    </I18nextProvider>
   );
 }

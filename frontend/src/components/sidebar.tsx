@@ -3,11 +3,6 @@
 
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { LayoutDashboard, Wallet, CoinsIcon, Activity, Calculator, User } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import LanguageSwitcher from "./LanguageSwitcher";
 import {
   Activity,
