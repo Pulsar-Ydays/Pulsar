@@ -212,14 +212,14 @@ export default function Wallet() {
               className="btn-primary px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full text-white"
               onClick={() => setTransactionModalOpen(true)}
             >
-              Ajouter une transaction
+              {t('add_a_transaction')}
             </button>
 
             <button
               onClick={() => setWalletModalOpen(true)}
               className="text-white hover:text-purple-400"
             >
-              Ajouter un wallet +
+              {t('add_a_wallet')} +
             </button>
 
             <select
@@ -231,7 +231,7 @@ export default function Wallet() {
               }}
             >
               <option value="" disabled>
-                Sélectionner un wallet
+                 {t('select_a_wallet')}
               </option>
               {wallets.map((wallet) => (
                 <option key={wallet.id} value={wallet.id}>
@@ -244,7 +244,7 @@ export default function Wallet() {
               href={`/transactions?walletId=${selectedWallet?.id}`}
               className="ml-auto text-white font-bold py-2 px-4 rounded-full hover:bg-purple-600 transition"
             >
-              Mes transactions
+              {t('my_transactions')}
             </Link>
           </div>
 
@@ -282,14 +282,14 @@ export default function Wallet() {
               return (
                 <div className="mt-8 p-4 rounded bg-gray-900 text-white">
                   <h2 className="text-xl font-semibold mb-4">
-                    Avoirs par crypto
+                    {t('holding_by_crypto')}
                   </h2>
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="text-left border-b border-gray-600">
                         <th className="py-2">Crypto</th>
-                        <th>Quantité</th>
-                        <th>Valeur totale (€)</th>
+                        <th>{t('quantity')}</th>
+                        <th>{t('total_value')} (€)</th>
                       </tr>
                     </thead>
                     <tbody>

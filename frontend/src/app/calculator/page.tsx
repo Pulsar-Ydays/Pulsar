@@ -56,14 +56,14 @@ export default function Calculator() {
       {isToken ? (
         <main className="flex-1 overflow-y-auto p-6">
           <h1 className="font-mono text-3xl font-bold mb-8 text-center">
-            Vos investissements en cryptomonnaie
+            {t('your_investistment')}
           </h1>
 
           <div className="max-w-2xl mx-auto space-y-6">
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Quelle est la valeur totale de vos investissements en crypto ?
+                  {t('what_is_the_total_value')}
                 </label>
                 <input
                   type="number"
@@ -77,7 +77,7 @@ export default function Calculator() {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Quelle est la valeur de votre portefeuille ?
+                  {t('what_is_the_of_your_portfolio')}
                 </label>
                 <input
                   type="number"
@@ -91,7 +91,7 @@ export default function Calculator() {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Quelle est la valeur de votre cession ?
+                  {t('what_is_the_value_of_your_transfer')}
                 </label>
                 <input
                   type="number"
@@ -108,19 +108,19 @@ export default function Calculator() {
               onClick={calculateTax}
               className="w-full p-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white font-mono transition-all"
             >
-              Calculer
+              {t('calculate_button')}
             </button>
 
             {result !== null && (
               <div className="mt-8 bg-gray-800 p-6 rounded-lg">
                 <h2 className="text-xl font-semibold mb-4">
-                  Estimation des impôts crypto
+                  {t('estimate_of_your_crypto_taxes')}
                 </h2>
 
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-sm text-gray-400">
-                      Plus-value imposable
+                      {t('taxable_capital_gains')}
                     </h3>
                     <p className="text-2xl font-bold text-purple-400">
                       {result.montantImposable.toFixed(2)} €
@@ -129,7 +129,7 @@ export default function Calculator() {
 
                   <div>
                     <h3 className="text-sm text-gray-400">
-                      Montant d&apos;impôt à payer
+                      {t('amount_of_tax_payable')}
                     </h3>
                     <p className="text-2xl font-bold text-purple-400">
                       {result.montantImpots.toFixed(2)} €
@@ -147,10 +147,10 @@ export default function Calculator() {
         </main>
       ) : (
         <div className="flex flex-col items-center justify-center h-screen w-full">
-          <h1>Vous devez être connecté pour accéder à cette page</h1>
+          <h1>{t('you_must_be_logged_in')}</h1>
           <Link href="/register" className="mt-4">
             <button className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm">
-              Se connecter
+              {t('log_in')}
             </button>
           </Link>
         </div>

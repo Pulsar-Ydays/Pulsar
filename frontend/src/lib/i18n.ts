@@ -76,6 +76,8 @@ const resources = {
       holding_by_crypto: 'Holding by crypto',
       quantity: 'Quantity',
       total_value: 'Total value',
+      actuality: 'News',
+      no_cryptocurrency_data_available: 'No cryptocurrency data available',
     },
   },
   fr: {
@@ -142,7 +144,7 @@ const resources = {
       error: 'Erreur',
       period: 'Période',
       no_cryptocurrency_selected_or_data_not_available: 'Aucune cryptomonnaie sélectionnée ou données non disponibles.',
-      loading_the_news: 'Chargement des news...',
+      loading_the_news: 'Chargement des actualités...',
       add_a_transaction: 'Ajouter une transaction',
       add_a_wallet: 'Ajouter un wallet',
       select_a_wallet: 'Sélectionner un wallet',
@@ -150,6 +152,8 @@ const resources = {
       holding_by_crypto: 'Avoirs par crypto',
       quantity: 'Quantité',
       total_value: 'Valeur totale',
+      actuality: 'Actualités',
+      no_cryptocurrency_data_available: 'Aucune donnée de cryptomonnaie disponible',
     },
   },
 };

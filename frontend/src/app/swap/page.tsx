@@ -1,10 +1,10 @@
 "use client";
 
-import Footer from "@/components/footer";
 import { Sidebar } from "@/components/sidebar";
 import priceMarket from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 interface CryptoData {
   id: string;
@@ -15,6 +15,7 @@ interface CryptoData {
 }
 
 export default function Home() {
+  const { t } = useTranslation();
   const [fromCurrency, setFromCurrency] = useState("USDT");
   const [toCurrency, setToCurrency] = useState("ETH");
   const [fromAmount, setFromAmount] = useState("");
@@ -196,7 +197,7 @@ export default function Home() {
 
             {isLoading ? (
               <div className="text-center py-4">
-                <p>Chargement des cours des cryptomonnaies...</p>
+                <p>{t('loading_cryptocurrency_prices')}...</p>
               </div>
             ) : error ? (
               <div className="text-center py-4 text-red-400">
@@ -245,7 +246,7 @@ export default function Home() {
                   </div>
                   {fromAmount && (
                     <div className="mt-2 text-sm text-gray-300">
-                      <p>Valeur: {getFromAmountUSD()} USD</p>
+                      <p>{t('value')} {getFromAmountUSD()} USD</p>
                     </div>
                   )}
                 </div>
@@ -272,7 +273,7 @@ export default function Home() {
                 </div>
                 <div className="w-full">
                   <label htmlFor="to" className="block mb-2 text-sm">
-                    Vers
+                    {t('towards')}
                   </label>
                   <div className="flex items-center space-x-4 bg-purple-900 py-2 px-4 rounded-lg">
                     <img
@@ -320,7 +321,7 @@ export default function Home() {
                 {fromAmount && toAmount && (
                   <div className="mt-4 text-sm text-gray-300">
                     <p>
-                      Taux de conversion: 1 {fromCurrency} ={" "}
+                      {t('conversion_rate')} 1 {fromCurrency} ={" "}
                       {(Number(toAmount) / Number(fromAmount)).toFixed(6)}{" "}
                       {toCurrency}
                     </p>
@@ -335,10 +336,10 @@ export default function Home() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-screen w-full">
-            <h1>Vous devez être connecté pour accéder à cette page</h1>
+            <h1>{t('you_must_be_logged_in')}</h1>
             <Link href="/register" className="mt-4">
               <button className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm">
-                Se connecter
+                {t('log_in')}
               </button>
             </Link>
           </div>

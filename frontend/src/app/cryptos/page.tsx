@@ -479,7 +479,7 @@ export default function Cryptos() {
             setSelectedCrypto(transformedData[0].id);
           }
         } else {
-          setError("Aucune donnée de cryptomonnaie disponible");
+          setError(t('no_cryptocurrency_data_available'));
         }
 
         // Récupérer les actualités
@@ -529,7 +529,7 @@ export default function Cryptos() {
       {/* Main content */}
       <main className="flex-1 justify-between overflow-y-auto p-6">
         <div>
-          <h1 className="text-3xl font-bold mb-6">Cryptos</h1>
+          <h1 className="text-3xl font-bold mb-6">{t('Crypto')}</h1>
 
           {/* Crypto sélectionnée - Affichage en haut */}
           {currentCrypto && !isLoading && (
@@ -568,7 +568,7 @@ export default function Cryptos() {
               htmlFor="crypto-search"
               className="block text-lg font-semibold mb-2"
             >
-              Rechercher une cryptomonnaie
+              {t('search_for_a_cryptocurrency')}
             </label>
 
             {/* Search Bar */}
@@ -576,7 +576,7 @@ export default function Cryptos() {
               id="crypto-search"
               ref={searchInputRef}
               type="text"
-              placeholder="Rechercher une cryptomonnaie"
+              placeholder={t('search_for_a_cryptocurrency')}
               className="w-full p-3 rounded-md bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
               value={searchTerm}
               onChange={handleSearchChange}
@@ -630,11 +630,11 @@ export default function Cryptos() {
           {/* Section pour afficher le graphique */}
           {isLoading ? (
             <div className="text-center py-10 bg-gray-800 rounded-lg">
-              <p className="text-gray-400">Chargement du graphique...</p>
+              <p className="text-gray-400">{t('loading_the_chart')}...</p>
             </div>
           ) : error ? (
             <div className="text-center py-10 bg-gray-800 rounded-lg">
-              <p className="text-red-400">Erreur: {error}</p>
+              <p className="text-red-400">{t('error')}: {error}</p>
             </div>
           ) : currentCrypto ? (
             <div className="grid grid-cols-1 gap-6">
@@ -681,14 +681,14 @@ export default function Cryptos() {
           ) : (
             <div className="text-center py-10 bg-gray-800 rounded-lg">
               <p className="text-gray-400">
-                Aucune cryptomonnaie sélectionnée ou données non disponibles.
+                {t('no_cryptocurrency_selected_or_data_not_available')}
               </p>
             </div>
           )}
         </div>
 
         <div className="mt-16">
-          <h2 className="text-3xl font-bold mb-6">Actualités</h2>
+          <h2 className="text-3xl font-bold mb-6">{t('actuality')}</h2>
           {actualites && actualites.length > 0 ? (
             actualites.slice(0, 10).map((article, index) => (
               <div
@@ -714,7 +714,7 @@ export default function Cryptos() {
               </div>
             ))
           ) : (
-            <p className="text-gray-400">Chargement des actualités...</p>
+            <p className="text-gray-400">{t('loading_the_news')}...</p>
           )}
         </div>
       </main>
