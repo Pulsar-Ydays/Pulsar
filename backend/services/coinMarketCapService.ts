@@ -40,3 +40,39 @@ export const getCryptoData = async () => {
     throw new Error("Failed to fetch cryptocurrency data");
   }
 };
+
+export const getPriceBySlug = async (slug: string): Promise<number | null> => {
+  const data = await getCryptoData();
+  const listings = data?.data;
+
+  if (!Array.isArray(listings)) return null;
+
+  const found = listings.find((crypto) => crypto.slug === slug.toLowerCase());
+  return found ? found.quote.USD.price : null;
+};
+
+export const getCryptoLogo = async (symbol: string): Promise<string | null> => {
+  try {
+    const response = await axios.get(
+      "https://pro-api.coinmarketcap.com/v1/cryptocurrency/info",
+      {
+        headers: {
+          "X-CMC_PRO_API_KEY": API_KEY,
+        },
+        params: {
+          symbol: symbol.toUpperCase(), // ex: BTC, ETH
+        },
+      }
+    );
+
+    const data = response.data.data[symbol.toUpperCase()];
+    return data?.logo || null;
+  } catch (error) {
+    // console.error("Erreur récupération logo :", error.response?.data || error.message);
+    return null;
+  }
+};
+
+export const getCoinIconUrl = (id: number) => {
+  return `https://s2.coinmarketcap.com/static/img/coins/64x64/${id}.png`;
+};

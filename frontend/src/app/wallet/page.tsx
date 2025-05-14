@@ -8,14 +8,26 @@ import { useEffect, useState } from "react";
 import TransactionInput from "@/components/TransactionInput";
 import WalletInput from "@/components/WalletInput";
 
+import getCryptoPrice from "@/lib/priceMarket";
+
 import Link from "next/link";
 
-const CRYPTO_ICONS: Record<string, string> = {
-  BTC: "https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=026",
-  ETH: "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026",
-  SOL: "https://cryptologos.cc/logos/solana-sol-logo.png?v=026",
-  ADA: "https://cryptologos.cc/logos/cardano-ada-logo.png?v=026",
-  DOGE: "https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=026",
+const CMC_ID_MAP: Record<string, number> = {
+  BTC: 1,
+  ETH: 1027,
+  SOL: 5426,
+  ADA: 2010,
+  DOGE: 74,
+  BNB: 1839,
+  XRP: 52,
+  // on peu tajouter les cryptos si on veut mais faut aller voir leur id sur coinmarketcap
+};
+
+const getCoinIconUrl = (symbol: string) => {
+  const id = CMC_ID_MAP[symbol.toUpperCase().trim()];
+  return id
+    ? `https://s2.coinmarketcap.com/static/img/coins/64x64/${id}.png`
+    : null;
 };
 
 export default function Wallet() {
@@ -47,6 +59,38 @@ export default function Wallet() {
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
 
+  const [marketPrices, setMarketPrices] = useState<Record<string, number>>({});
+
+  // juste au-dessus des useEffect
+  const fetchTransactions = async () => {
+    if (!selectedWallet) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/wallets/${selectedWallet.id}/transactions`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+      setTransactions(data);
+    } catch (error) {
+      console.error("Erreur lors du fetch des transactions :", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, [selectedWallet]);
+
+  //Get wallets
   useEffect(() => {
     const fetchWallets = async () => {
       try {
@@ -89,43 +133,17 @@ export default function Wallet() {
     fetchWallets();
   }, []);
 
+  // Set default selected wallet
   useEffect(() => {
     if (wallets.length > 0 && !selectedWallet) setSelectedWallet(wallets[0]);
   }, [wallets]);
 
+  //Test console log
   useEffect(() => {
     console.log("wallets chargés:", wallets);
   }, [wallets]);
 
-  //  Get transactions
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      if (!selectedWallet) return;
-
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      try {
-        const res = await fetch(
-          `http://localhost:3000/api/wallets/${selectedWallet.id}/transactions`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await res.json();
-        setTransactions(data);
-      } catch (error) {
-        console.error("Erreur lors du fetch des transactions :", error);
-      }
-    };
-
-    fetchTransactions();
-  }, [selectedWallet]);
-
+  //POST Wallet
   const addWallet = async (walletName: string) => {
     try {
       const userId = localStorage.getItem("userId");
@@ -167,23 +185,62 @@ export default function Wallet() {
     }
   };
 
-  const walletTotalValue = selectedWallet?.holdings?.reduce(
-    (acc, h) => acc + h.amount * h.averageBuyPrice,
-    0
-  );
+  // Récupération des prix du marché
+  useEffect(() => {
+    const fetchPrices = async () => {
+      if (!selectedWallet) return;
 
+      const slugMapping: Record<string, string> = {
+        BTC: "bitcoin",
+        BITCOIN: "bitcoin",
+        ETH: "ethereum",
+        ETHEREUM: "ethereum",
+        SOL: "solana",
+        SOLANA: "solana",
+        ADA: "cardano",
+        CARDANO: "cardano",
+        DOGE: "dogecoin",
+        DOGECOIN: "dogecoin",
+      };
+
+      const prices: Record<string, number> = {};
+
+      for (const holding of selectedWallet.holdings) {
+        const symbol = holding.symbol.toUpperCase();
+        const slug = slugMapping[symbol];
+
+        if (!slug) {
+          console.warn(`[fetchPrices] Slug non trouvé pour ${symbol}`);
+          continue;
+        }
+
+        try {
+          const price = await getCryptoPrice(slug);
+          prices[symbol] = price;
+        } catch (error) {
+          console.error(`[fetchPrices] Erreur pour ${symbol}:`, error);
+          prices[symbol] = 0;
+        }
+      }
+
+      setMarketPrices(prices);
+      console.log("Prix du marché actualisés :", prices);
+    };
+
+    fetchPrices();
+  }, [selectedWallet]);
   const walletTotalCost = selectedWallet?.holdings?.reduce(
     (acc, h) => acc + h.amount * h.averageBuyPrice,
     0
   );
 
-  const fakeCurrentMarketValue = selectedWallet?.holdings?.reduce(
-    (acc, h) => acc + h.amount * h.averageBuyPrice * 1.02, // 2% au-dessus pour simuler
-    0
-  );
+  const walletMarketValue = selectedWallet?.holdings?.reduce((acc, h) => {
+    const currentPrice = marketPrices[h.symbol] ?? h.averageBuyPrice;
+    return acc + h.amount * currentPrice;
+  }, 0);
 
   const percentGain = walletTotalCost
-    ? ((fakeCurrentMarketValue! - walletTotalCost) / walletTotalCost) * 100
+    ? ((walletMarketValue! - walletTotalCost) / walletTotalCost) * 100
     : 0;
 
   return (
@@ -199,9 +256,12 @@ export default function Wallet() {
           </header>
 
           <WalletValue
-            totalValue={`${fakeCurrentMarketValue?.toLocaleString("fr-FR")} €`}
-            percentageChange={`${percentGain.toFixed(2)}%`}
-            isPositive={percentGain >= 0}
+            totalValue={`${walletMarketValue?.toLocaleString("fr-FR")} €`}
+            percentageChange={`${(
+              ((walletMarketValue ?? 0) - (walletTotalCost ?? 0)) /
+              (walletTotalCost ?? 1)
+            ).toFixed(2)}%`}
+            isPositive={(walletMarketValue ?? 0) >= (walletTotalCost ?? 0)}
           />
 
           <div className="flex items-center mb-6 gap-4">
@@ -296,9 +356,11 @@ export default function Wallet() {
                           className="border-b border-gray-700 hover:bg-gray-800 transition"
                         >
                           <td className="py-2 font-medium flex items-center gap-2">
-                            {CRYPTO_ICONS[symbol] && (
+                            {getCoinIconUrl(symbol) && (
                               <img
-                                src={CRYPTO_ICONS[symbol]}
+                                src={
+                                  getCoinIconUrl(symbol) || "/fallback-icon.png"
+                                }
                                 alt={symbol}
                                 className="w-5 h-5"
                               />
@@ -331,47 +393,47 @@ export default function Wallet() {
 
           {/* Affichage temporaire de transactions */}
           {/* {transactions.length > 0 && (
-            <div className="mt-8 p-4 rounded bg-gray-900 text-white">
-              <h2 className="text-xl font-semibold mb-4">
-                Dernières transactions
-              </h2>
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left border-b border-gray-600">
-                    <th className="py-2">Date</th>
-                    <th>Type</th>
-                    <th>Crypto</th>
-                    <th>Quantité</th>
-                    <th>Prix unitaire (€)</th>
-                    <th>Total (€)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transactions.map((tx, idx) => (
-                    <tr
-                      key={idx}
-                      className="border-b border-gray-700 hover:bg-gray-800 transition"
-                    >
-                      <td className="py-2">
-                        {new Date(tx.createdAt).toLocaleDateString()}
-                      </td>
-                      <td
-                        className={
-                          tx.type === "buy" ? "text-green-400" : "text-red-400"
-                        }
-                      >
-                        {tx.type.toUpperCase()}
-                      </td>
-                      <td>{tx.symbol}</td>
-                      <td>{tx.quantity}</td>
-                      <td>{tx.price.toFixed(2)}</td>
-                      <td>{(tx.price * tx.quantity).toFixed(2)}</td>
+              <div className="mt-8 p-4 rounded bg-gray-900 text-white">
+                <h2 className="text-xl font-semibold mb-4">
+                  Dernières transactions
+                </h2>
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left border-b border-gray-600">
+                      <th className="py-2">Date</th>
+                      <th>Type</th>
+                      <th>Crypto</th>
+                      <th>Quantité</th>
+                      <th>Prix unitaire (€)</th>
+                      <th>Total (€)</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )} */}
+                  </thead>
+                  <tbody>
+                    {transactions.map((tx, idx) => (
+                      <tr
+                        key={idx}
+                        className="border-b border-gray-700 hover:bg-gray-800 transition"
+                      >
+                        <td className="py-2">
+                          {new Date(tx.createdAt).toLocaleDateString()}
+                        </td>
+                        <td
+                          className={
+                            tx.type === "buy" ? "text-green-400" : "text-red-400"
+                          }
+                        >
+                          {tx.type.toUpperCase()}
+                        </td>
+                        <td>{tx.symbol}</td>
+                        <td>{tx.quantity}</td>
+                        <td>{tx.price.toFixed(2)}</td>
+                        <td>{(tx.price * tx.quantity).toFixed(2)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )} */}
 
           {isWalletModalOpen && (
             <div
@@ -410,9 +472,9 @@ export default function Wallet() {
                 </button>
                 <TransactionInput
                   walletId={selectedWallet.id}
-                  onTransactionAdded={() => {
-                    setTransactionModalOpen(false);
-                    // Optionally refresh wallets or selectedWallet data here
+                  onTransactionAdded={async () => {
+                    await fetchTransactions(); // 🔁 recharge les données
+                    setTransactionModalOpen(false); // ferme la modale
                   }}
                 />
               </div>
