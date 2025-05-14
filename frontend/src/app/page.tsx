@@ -26,22 +26,27 @@ const mockChartData: { date: string; value: number }[] = [
 ];
 
 export default function Home() {
-  //Gestion Modal "ajouter crypto"
+  // Gestion Modal "ajouter crypto"
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
   const { t } = useTranslation();
 
-  //Gestion User Connecté
+  // Restaurer la langue sélectionnée au chargement de la page
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("language") || "fr";
+    i18n.changeLanguage(savedLanguage);
+  }, []);
+
+  // Gestion User Connecté
   const [username, setUsername] = useState<string | null>(null);
 
   // Stock de l'id
   const [userId, setUserId] = useState<string | null>(null);
 
-  //On récup automatiquement le token du user connecté
+  // On récup automatiquement le token du user connecté
   useEffect(() => {
     const token = localStorage.getItem("token");
-    i18n.changeLanguage('fr');
     if (token) {
       try {
         const decoded: any = decodeJWT(token);
@@ -101,7 +106,7 @@ export default function Home() {
             <p className="font-mono text-muted-foreground mb-4">
               {t('to_keep_connected')}
             </p>
-            <Button>{t ('learn_more')}</Button>
+            <Button>{t('learn_more')}</Button>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <StatsCard
@@ -117,14 +122,6 @@ export default function Home() {
               gradient="taskDone"
             />
           </div>
-          {/* <div className="add">
-              <button
-                className="px-4 py-2 mt-5 md:px-6 md:py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold text-lg uppercase py-3 px-6 rounded-full shadow-md transform transition-transform hover:-translate-y-1 hover:shadow-lg hover:ring-2 hover:ring-purple-400 active:translate-y-1 active:shadow-sm"
-                onClick={openModal}
-              >
-                {t('add_my_crypto')}
-              </button>
-            </div> */}
         </div>
       </main>
       {/* Modal */}
