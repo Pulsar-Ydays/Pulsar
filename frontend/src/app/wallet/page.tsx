@@ -270,14 +270,14 @@ export default function Wallet() {
               className="btn-primary px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full text-white"
               onClick={() => setTransactionModalOpen(true)}
             >
-              {t('add_a_transaction')}
+              {t("add_a_transaction")}
             </button>
 
             <button
               onClick={() => setWalletModalOpen(true)}
               className="text-white hover:text-purple-400"
             >
-             {t('add_a_wallet')} +
+              {t("add_a_wallet")} +
             </button>
 
             <select
@@ -289,7 +289,7 @@ export default function Wallet() {
               }}
             >
               <option value="" disabled>
-                {t('select_a_wallet')}
+                {t("select_a_wallet")}
               </option>
               {wallets.map((wallet) => (
                 <option key={wallet.id} value={wallet.id}>
@@ -302,7 +302,7 @@ export default function Wallet() {
               href={`/transactions?walletId=${selectedWallet?.id}`}
               className="ml-auto text-white font-bold py-2 px-4 rounded-full hover:bg-purple-600 transition"
             >
-              {t('my_transactions')}
+              {t("my_transactions")}
             </Link>
           </div>
 
@@ -340,14 +340,14 @@ export default function Wallet() {
               return (
                 <div className="mt-8 p-4 rounded bg-gray-900 text-white">
                   <h2 className="text-xl font-semibold mb-4">
-                    {t('holding_by_crypto')}
+                    {t("holding_by_crypto")}
                   </h2>
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="text-left border-b border-gray-600">
                         <th className="py-2">Crypto</th>
-                        <th>{t('quantity')}</th>
-                        <th>{t(' total_value')} (€)</th>
+                        <th>{t("quantity")}</th>
+                        <th>{t(" total_value")} (€)</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -391,50 +391,6 @@ export default function Wallet() {
                 </div>
               );
             })()}
-
-          {/* Affichage temporaire de transactions */}
-          {/* {transactions.length > 0 && (
-              <div className="mt-8 p-4 rounded bg-gray-900 text-white">
-                <h2 className="text-xl font-semibold mb-4">
-                  Dernières transactions
-                </h2>
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-left border-b border-gray-600">
-                      <th className="py-2">Date</th>
-                      <th>Type</th>
-                      <th>Crypto</th>
-                      <th>Quantité</th>
-                      <th>Prix unitaire (€)</th>
-                      <th>Total (€)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {transactions.map((tx, idx) => (
-                      <tr
-                        key={idx}
-                        className="border-b border-gray-700 hover:bg-gray-800 transition"
-                      >
-                        <td className="py-2">
-                          {new Date(tx.createdAt).toLocaleDateString()}
-                        </td>
-                        <td
-                          className={
-                            tx.type === "buy" ? "text-green-400" : "text-red-400"
-                          }
-                        >
-                          {tx.type.toUpperCase()}
-                        </td>
-                        <td>{tx.symbol}</td>
-                        <td>{tx.quantity}</td>
-                        <td>{tx.price.toFixed(2)}</td>
-                        <td>{(tx.price * tx.quantity).toFixed(2)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )} */}
 
           {isWalletModalOpen && (
             <div
