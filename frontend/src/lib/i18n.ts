@@ -37,7 +37,7 @@ const resources = {
       assets: 'Assets',
       price: 'Price',
       total_balance: 'Total Balance',
-      '24h_market': '24h Market',
+      market: '24h Market',
       from: 'From',
       to: 'To',
       swap_cap: 'SWAP',
@@ -95,7 +95,10 @@ const resources = {
       create_a_portfolio: 'Create a portfolio',
       choose_the_name_of_the_wallet: 'Choose the name of the wallet',
       create_a_wallet : 'Create a Wallet',
-      choose_the_wallet_name : 'Choose the wallet name'
+      choose_the_wallet_name : 'Choose the wallet name',
+      latest_transactions: 'Latest transactions',
+      no_transaction_for_this_wallet: 'No transaction for this wallet.',
+      currency: 'Currency'
     },
   },
   fr: {
@@ -131,7 +134,7 @@ const resources = {
       assets: 'Actifs',
       price: 'Prix',
       total_balance: 'Solde total',
-      '24h_market': 'Marché 24 h',
+      market: 'Marché 24 h',
       from: 'De',
       to: 'À',
       swap_cap: 'ÉCHANGER',
@@ -189,7 +192,10 @@ const resources = {
       create_a_portfolio: 'Créer un portefeuille',
       choose_the_name_of_the_wallet: 'Choisissez le nom du portefeuille',
       create_a_wallet : 'Créer un Wallet',
-      choose_the_wallet_name : 'Choisissez le nom du wallet'
+      choose_the_wallet_name : 'Choisissez le nom du wallet',
+      latest_transactions: 'Dernières transactions',
+      no_transaction_for_this_wallet: 'Aucune transaction pour ce wallet.',
+      currency: 'Monnaie'
     },
   },
 };

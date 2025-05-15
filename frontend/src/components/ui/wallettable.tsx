@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 type Asset = {
   icon: string;
@@ -15,6 +16,7 @@ type AssetTableProps = {
 };
 
 const AssetTable: React.FC<AssetTableProps> = ({ assets }) => {
+  const { t } = useTranslation();
   return (
     <section className="bg-gray-800 rounded-lg p-6">
       <div className="h-auto max-h-96 overflow-y-auto lg:max-h-[500px]">
@@ -22,13 +24,13 @@ const AssetTable: React.FC<AssetTableProps> = ({ assets }) => {
           <table className="w-full text-left text-sm sm:text-base">
             <thead>
               <tr className="border-b border-gray-700 text-gray-400">
-                <th className=" font-mono py-4 px-2">Currency</th>
-                <th className=" font-mono py-4 px-2">Quantity</th>
-                <th className="font-mono px-2  sm:table-cell">Price</th>
+                <th className=" font-mono py-4 px-2">{t('currency')}</th>
+                <th className=" font-mono py-4 px-2">{t('quantity')}</th>
+                <th className="font-mono px-2  sm:table-cell">{t('price')}</th>
                 <th className="font-mono px-2 hidden sm:table-cell">
-                  Total Balance
+                  {t('total_balance')}
                 </th>
-                <th className="font-monopx-2  lg:table-cell">24h Market</th>
+                <th className="font-monopx-2  lg:table-cell">{t('market')}</th>
               </tr>
             </thead>
             <tbody>

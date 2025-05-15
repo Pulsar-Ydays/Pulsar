@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Sidebar } from "@/components/sidebar";
 import UserStatus from "@/components/ui/userstatus";
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
 export default function Transactions() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const walletId = searchParams.get("walletId");
   const [transactions, setTransactions] = useState([]);
@@ -45,7 +47,7 @@ export default function Transactions() {
                 &lt;
               </Link>
               <h1 className="font-mono text-2xl md:text-3xl mb-4 md:mb-0 ml-6">
-                Mes transactions
+                {t('my_transactions')}
               </h1>
             </div>
             <UserStatus />
@@ -54,7 +56,7 @@ export default function Transactions() {
           {transactions.length > 0 ? (
             <div className="mt-4 bg-gray-900 rounded-lg p-4">
               <h2 className="text-white text-xl font-semibold mb-4">
-                Dernières transactions
+                {t('latest_transactions')}
               </h2>
               <table className="w-full text-sm text-white">
                 <thead>
@@ -94,7 +96,7 @@ export default function Transactions() {
             </div>
           ) : (
             <p className="text-white text-center mt-8">
-              Aucune transaction pour ce wallet.
+              {t('no_transaction_for_this_wallet')}
             </p>
           )}
         </div>
