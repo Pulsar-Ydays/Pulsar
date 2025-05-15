@@ -19,7 +19,9 @@ export function CryptoCard({ name, symbol, price, change, icon, gradient }: Cryp
           <p className="text-xl font-bold text-white">{price}</p>
           <p className="text-sm text-white/60">{change}</p>
         </div>
-        <div className="h-10 w-10">{icon}</div>
+        {icon && (
+          <img src={icon} alt={`${name} logo`} className="w-8 h-8 rounded-full" />
+        )}
       </div>
     </Card>
   );

@@ -7,13 +7,12 @@ import { Sidebar } from "@/components/sidebar";
 import { StatsCard } from "@/components/stats-card";
 import TransactionInput from "@/components/TransactionInput";
 import i18n from '../lib/i18n';
-import { I18nextProvider } from 'react-i18next';
-import { Button } from "@/components/ui/button";
 import { decodeJWT } from "./utils/jwtUtils";
 
 import UserStatus from "@/components/ui/userstatus";
+import priceMarket from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { Bitcoin, Clock } from "lucide-react";
+
 
 const mockChartData: { date: string; value: number }[] = [
   { date: "01/01", value: 400 },
@@ -61,6 +60,45 @@ export default function Home() {
     }
   }, []);
 
+  const [cryptoPrices, setCryptoPrices] = useState<{
+    bitcoin?: { price: string; change: string; icon: string },
+    ethereum?: { price: string; change: string; icon: string }
+  }>({});
+
+  useEffect(() => {
+    const fetchCryptoPrices = async () => {
+      try {
+        const response = await priceMarket();
+        const pricesArray = response.data;
+        console.log("Data reçue de priceMarket:", pricesArray);
+
+        const bitcoin = pricesArray.find((crypto: any) => crypto.slug === 'bitcoin');
+        const ethereum = pricesArray.find((crypto: any) => crypto.slug === 'ethereum');
+
+        if (bitcoin && ethereum) {
+          setCryptoPrices({
+            bitcoin: {
+              price: `${bitcoin.quote.USD.price.toFixed(2)} $`,
+              change: `${bitcoin.quote.USD.percent_change_24h.toFixed(2)}%`,
+              icon: `https://s2.coinmarketcap.com/static/img/coins/64x64/${bitcoin.id}.png`
+            },
+            ethereum: {
+              price: `${ethereum.quote.USD.price.toFixed(2)} $`,
+              change: `${ethereum.quote.USD.percent_change_24h.toFixed(2)}%`,
+              icon: `https://s2.coinmarketcap.com/static/img/coins/64x64/${ethereum.id}.png`
+            },
+          });
+        } else {
+          console.warn('Bitcoin ou Ethereum non trouvé dans les données');
+        }
+      } catch (error) {
+        console.error('Failed to fetch crypto prices', error);
+      }
+    };
+
+    fetchCryptoPrices();
+  }, []);
+
   return (
     <div className="flex w-full h-screen bg-gradient-to-b from-[#111827] via-gray-900 to-purple-900">
 
@@ -69,12 +107,8 @@ export default function Home() {
         <div className="flex items-center justify-between p-6">
           <h1 className="font-mono text-3xl font-bold">Overview</h1>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 bg-secondary rounded-full px-4 py-2">
-              <Clock className="h-4 w-4" />
-              <span className="text-sm">0.0123 ETH</span>
-              <div className="bg-background/20 px-2 py-0.5 rounded text-xs">
-                <UserStatus />
-              </div>
+            <div className="bg-background/20 px-2 py-0.5 rounded text-xs">
+              <UserStatus />
             </div>
           </div>
         </div>
@@ -83,17 +117,17 @@ export default function Home() {
           <CryptoCard
             name="Bitcoin"
             symbol="BTC"
-            price="$42,826.00"
-            change="+1.6%"
-            icon={<Bitcoin className="h-full w-full text-white" />}
+            price={cryptoPrices.bitcoin?.price || 'Chargement...'}
+            change={cryptoPrices.bitcoin?.change || 'Chargement...'}
+            icon={cryptoPrices.bitcoin?.icon}
             gradient="bg-gradient-to-r from-orange-500 to-yellow-500"
           />
           <CryptoCard
             name="Ethereum"
             symbol="ETH"
-            price="$2,532.00"
-            change="+0.25%"
-            icon={<Bitcoin className="h-full w-full text-white" />} //add ethereum
+            price={cryptoPrices.ethereum?.price || 'Chargement...'}
+            change={cryptoPrices.ethereum?.change || 'Chargement...'}
+            icon={cryptoPrices.ethereum?.icon}
             gradient="bg-gradient-to-r from-blue-500 to-purple-500"
           />
         </div>
@@ -106,7 +140,6 @@ export default function Home() {
             <p className="font-mono text-muted-foreground mb-4">
               {t('to_keep_connected')}
             </p>
-            <Button>{t('learn_more')}</Button>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <StatsCard
@@ -141,3 +174,10 @@ export default function Home() {
     </div>
   );
 }
+
+
+
+
+
+
+

@@ -214,61 +214,48 @@ export default function ProfileForm() {
                   )}
                 />
 
-                {/* Password Field */}
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[#A0AEC0] font-medium tracking-wider uppercase text-sm">{t('password')}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder={t('your_password')}
-                          {...field}
-                          className="w-full p-4 bg-[#2C2C3E] text-[#E2E8F0] border border-[#3A3A4E] rounded-xl focus:border-[#6A5ACD] focus:ring-2 focus:ring-[#6A5ACD]/50 focus:outline-none transition-all duration-300 ease-in-out"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </div>
             </div>
 
             <div className="mt-8 flex flex-col items-center space-y-4">
-               <Link href="/data-policy">
-              <Button
-                className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
-              >
-                {t('data_policy')}
-              </Button>
-            </Link>
-              <Button
-                type="submit"
-                className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
-              >
-                {t('update_profile')}
-              </Button>
 
-              <Link href="/register">
+              <div className="flex flex-col sm:flex-row gap-4 w-full justify-between items-center">
+                <Link href="/data-policy">
+                  <Button
+                    className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
+                  >
+                    {t('data_policy')}
+                  </Button>
+                </Link>
                 <Button
+                  type="submit"
                   className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("userId");
-                  }}
                 >
-                  {t('disconnection')}
+                  {t('update_profile')}
                 </Button>
-              </Link>
 
-              <Button
-                className="bg-red-600 hover:bg-red-800 text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
-                onClick={deleteUser}
-              >
-                {t('delete_account')}
-              </Button>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 w-full justify-between items-center">
+                <Link href="/register">
+                  <Button
+                    className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      localStorage.removeItem("userId");
+                    }}
+                  >
+                    {t('disconnection')}
+                  </Button>
+                </Link>
+
+                <Button
+                  className="bg-red-600 hover:bg-red-800 text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
+                  onClick={deleteUser}
+                >
+                  {t('delete_account')}
+                </Button>
+              </div>
             </div>
           </form>
         </Form>
@@ -276,3 +263,4 @@ export default function ProfileForm() {
     </div>
   );
 }
+

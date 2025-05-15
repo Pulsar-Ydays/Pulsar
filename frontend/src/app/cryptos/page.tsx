@@ -2,10 +2,10 @@
 
 import { Sidebar } from "@/components/sidebar";
 import { StatsCard } from "@/components/stats-card";
-import { useTranslation } from 'react-i18next';
 import priceMarket from "@/lib/utils";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 interface CryptoArticle {
   title: string;
@@ -119,10 +119,10 @@ export default function Cryptos() {
   const currentCrypto =
     selectedCrypto && marketData.length > 0
       ? marketData.find(
-          (crypto) =>
-            crypto.id === selectedCrypto ||
-            crypto.symbol.toLowerCase() === selectedCrypto.toLowerCase()
-        )
+        (crypto) =>
+          crypto.id === selectedCrypto ||
+          crypto.symbol.toLowerCase() === selectedCrypto.toLowerCase()
+      )
       : null;
 
   // Générer des données de prix historiques réalistes pour différentes périodes
@@ -322,9 +322,9 @@ export default function Cryptos() {
         const price =
           initialPrice +
           (currentPrice - initialPrice) *
-            progressFactor *
-            cycleFactor *
-            randomFactor;
+          progressFactor *
+          cycleFactor *
+          randomFactor;
 
         priceHistory.push({
           date: dateStr,
@@ -340,8 +340,8 @@ export default function Cryptos() {
           daysBack < 1
             ? "Maintenant"
             : daysBack <= 1
-            ? "Maintenant"
-            : "Aujourd'hui",
+              ? "Maintenant"
+              : "Aujourd'hui",
         value: currentPrice,
       };
     }
@@ -411,15 +411,15 @@ export default function Cryptos() {
         crypto.quote && crypto.quote.USD
           ? crypto.quote.USD
           : {
-              price: 0,
-              percent_change_24h: 0,
-              percent_change_1h: 0,
-              percent_change_7d: 0,
-              percent_change_30d: 0,
-              percent_change_60d: 0,
-              percent_change_90d: 0,
-              market_cap: 0,
-            };
+            price: 0,
+            percent_change_24h: 0,
+            percent_change_1h: 0,
+            percent_change_7d: 0,
+            percent_change_30d: 0,
+            percent_change_60d: 0,
+            percent_change_90d: 0,
+            market_cap: 0,
+          };
 
       return {
         id: crypto.slug || String(crypto.id), // Utiliser slug ou convertir l'ID numérique en string
@@ -548,11 +548,10 @@ export default function Cryptos() {
                     {currentCrypto.current_price.toLocaleString()} $
                   </p>
                   <p
-                    className={`text-sm ${
-                      currentCrypto.price_change_percentage_24h >= 0
+                    className={`text-sm ${currentCrypto.price_change_percentage_24h >= 0
                         ? "text-green-400"
                         : "text-red-400"
-                    }`}
+                      }`}
                   >
                     {currentCrypto.price_change_percentage_24h >= 0 ? "+" : ""}
                     {currentCrypto.price_change_percentage_24h.toFixed(2)}%
@@ -611,11 +610,10 @@ export default function Cryptos() {
                             {crypto.current_price.toLocaleString()} $
                           </span>
                           <span
-                            className={`text-xs ${
-                              crypto.price_change_percentage_24h >= 0
+                            className={`text-xs ${crypto.price_change_percentage_24h >= 0
                                 ? "text-green-400"
                                 : "text-red-400"
-                            }`}
+                              }`}
                           >
                             {crypto.price_change_percentage_24h >= 0 ? "+" : ""}
                             {crypto.price_change_percentage_24h.toFixed(2)}%
@@ -642,7 +640,7 @@ export default function Cryptos() {
               <div className="bg-gray-800 p-4 rounded-lg">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-semibold">
-                    Période: {getTimePeriodLabel(selectedTimePeriod)}
+                    {t('period')}: {getTimePeriodLabel(selectedTimePeriod)}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {(
@@ -651,11 +649,10 @@ export default function Cryptos() {
                       <button
                         key={period}
                         onClick={() => handleTimePeriodChange(period)}
-                        className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                          selectedTimePeriod === period
+                        className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${selectedTimePeriod === period
                             ? "bg-blue-600 text-white"
                             : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                        }`}
+                          }`}
                       >
                         {period}
                       </button>
@@ -666,15 +663,13 @@ export default function Cryptos() {
 
               {/* Graphique */}
               <StatsCard
-                title={`${
-                  currentCrypto.name
-                } (${currentCrypto.symbol.toUpperCase()}) - ${getTimePeriodLabel(
-                  selectedTimePeriod
-                )}`}
+                title={`${currentCrypto.name
+                  } (${currentCrypto.symbol.toUpperCase()}) - ${getTimePeriodLabel(
+                    selectedTimePeriod
+                  )}`}
                 data={getChartData(currentCrypto, selectedTimePeriod)}
-                percentage={`${
-                  currentCrypto.price_change_percentage_24h >= 0 ? "+" : ""
-                }${currentCrypto.price_change_percentage_24h.toFixed(2)}%`}
+                percentage={`${currentCrypto.price_change_percentage_24h >= 0 ? "+" : ""
+                  }${currentCrypto.price_change_percentage_24h.toFixed(2)}%`}
                 gradient={getCryptoGradient(currentCrypto.id)}
               />
             </div>
