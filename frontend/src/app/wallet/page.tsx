@@ -6,6 +6,7 @@ import WalletValue from "@/components/ui/walletvalue";
 import { useEffect, useState } from "react";
 
 import TransactionInput from "@/components/TransactionInput";
+import { useTranslation } from "react-i18next";
 import WalletInput from "@/components/WalletInput";
 
 import getCryptoPrice from "@/lib/priceMarket";
@@ -114,7 +115,6 @@ export default function Wallet() {
         if (!response.ok) {
           throw new Error(`Erreur HTTP : ${response.status}`);
         }
-
         const walletsData = await response.json();
         console.log("Wallets reçus :", walletsData);
 

@@ -11,12 +11,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from 'react-i18next';
 
 export default function ProfileForm() {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm({
@@ -165,39 +166,28 @@ export default function ProfileForm() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className=" max-w-4xl flex flex-col bg-[#1A1A1D] bg-opacity-90 shadow-xl rounded-lg p-8"
+            className="max-w-xl w-full bg-[#1E1E2E] border border-[#2C2C3E] rounded-2xl shadow-2xl p-10 transform transition-all duration-300 hover:scale-[1.02]"
           >
             {/* Title */}
-            <h1 className="text-3xl font-bold text-center mb-8 text-white">
-              My Profile
+            <h1 className="text-4xl font-extrabold text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+              {t('my_profile')}
             </h1>
 
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              {/* Profile Picture */}
-              <div className="flex-shrink-0">
-                <Image
-                  src="/ppUser.png"
-                  width={150}
-                  height={150}
-                  alt="Profile picture"
-                  className="rounded-full"
-                />
-              </div>
-
+            <div className="w-full">
               {/* Input Fields */}
-              <div className="flex flex-col w-full space-y-4">
+              <div className="grid grid-cols-1 gap-6">
                 {/* Name Field */}
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-300">Name</FormLabel>
+                      <FormLabel className="text-[#A0AEC0] font-medium tracking-wider uppercase text-sm">{t('name')}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Your name"
+                          placeholder={t('your_name')}
                           {...field}
-                          className="w-full p-3 bg-[#2A0140] text-gray-200 border border-transparent focus:border-[#FF4DFF] focus:ring-2 focus:ring-[#FF4DFF] focus:outline-none rounded-md transition-all"
+                          className="w-full p-4 bg-[#2C2C3E] text-[#E2E8F0] border border-[#3A3A4E] rounded-xl focus:border-[#6A5ACD] focus:ring-2 focus:ring-[#6A5ACD]/50 focus:outline-none transition-all duration-300 ease-in-out"
                         />
                       </FormControl>
                       <FormMessage />
@@ -211,12 +201,32 @@ export default function ProfileForm() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-300">Email</FormLabel>
+                      <FormLabel className="text-[#A0AEC0] font-medium tracking-wider uppercase text-sm">{t('email')}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="example@domain.com"
+                          placeholder={t('example')}
                           {...field}
-                          className="w-full p-3 bg-[#2A0140] text-gray-200 border border-transparent focus:border-[#FF4DFF] focus:ring-2 focus:ring-[#FF4DFF] focus:outline-none rounded-md transition-all"
+                          className="w-full p-4 bg-[#2C2C3E] text-[#E2E8F0] border border-[#3A3A4E] rounded-xl focus:border-[#6A5ACD] focus:ring-2 focus:ring-[#6A5ACD]/50 focus:outline-none transition-all duration-300 ease-in-out"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Password Field */}
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-[#A0AEC0] font-medium tracking-wider uppercase text-sm">{t('password')}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder={t('your_password')}
+                          {...field}
+                          className="w-full p-4 bg-[#2C2C3E] text-[#E2E8F0] border border-[#3A3A4E] rounded-xl focus:border-[#6A5ACD] focus:ring-2 focus:ring-[#6A5ACD]/50 focus:outline-none transition-all duration-300 ease-in-out"
                         />
                       </FormControl>
                       <FormMessage />
@@ -227,11 +237,18 @@ export default function ProfileForm() {
             </div>
 
             <div className="mt-8 flex flex-col items-center space-y-4">
+               <Link href="/data-policy">
+              <Button
+                className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
+              >
+                {t('data_policy')}
+              </Button>
+            </Link>
               <Button
                 type="submit"
                 className="bg-[#FF4DFF] hover:bg-[#D900FF] text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
               >
-                Update Profile
+                {t('update_profile')}
               </Button>
 
               <Link href="/register">
@@ -242,7 +259,7 @@ export default function ProfileForm() {
                     localStorage.removeItem("userId");
                   }}
                 >
-                  Déconnexion
+                  {t('disconnection')}
                 </Button>
               </Link>
 
@@ -250,7 +267,7 @@ export default function ProfileForm() {
                 className="bg-red-600 hover:bg-red-800 text-white rounded-full px-8 py-3 uppercase tracking-wider shadow-md"
                 onClick={deleteUser}
               >
-                Supprimer le compte
+                {t('delete_account')}
               </Button>
             </div>
           </form>

@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+
+import { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 
 const UserStatus = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -16,10 +19,10 @@ const UserStatus = () => {
     if (user) {
       try {
         setIsLoggedIn(true);
-        setUserName(user); // Assure-toi que `name` existe bien dans ton objet
+        setUserName(user); 
       } catch (error) {
         console.error("Invalid user data in localStorage", error);
-        localStorage.removeItem("user"); // Supprime les données corrompues
+        localStorage.removeItem("user"); 
       }
     }
   }, []);
