@@ -245,14 +245,12 @@ export default function Wallet() {
     : 0;
 
   return (
-    <div className="flex w-full h-screen bg-gradient-to-b from-[#111827] via-gray-900 to-purple-900">
+    <div className="flex flex-col md:flex-row w-full min-h-screen bg-gradient-to-b from-[#111827] via-gray-900 to-purple-900">
       <Sidebar />
-      <main className="flex-1  pt-8 min-h-full">
-        <div className="max-w-full md:px-8">
-          <header className="flex flex-col md:flex-row justify-between items-center mb-8">
-            <h1 className="font-mono text-2xl md:text-3xl mb-4 md:mb-0">
-              Wallet
-            </h1>
+      <main className="flex-1 pt-8 min-h-full px-2 md:px-8">
+        <div className="w-full">
+          <header className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <h1 className="font-mono text-2xl md:text-3xl">Wallet</h1>
             <UserStatus />
           </header>
 
@@ -265,9 +263,9 @@ export default function Wallet() {
             isPositive={(walletMarketValue ?? 0) >= (walletTotalCost ?? 0)}
           />
 
-          <div className="flex items-center mb-6 gap-4">
+          <div className="flex flex-col md:flex-row items-center mb-6 gap-4">
             <button
-              className="btn-primary px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full text-white"
+              className="btn-primary px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full text-white w-full md:w-auto"
               onClick={() => setTransactionModalOpen(true)}
             >
               {t("add_a_transaction")}
@@ -275,13 +273,13 @@ export default function Wallet() {
 
             <button
               onClick={() => setWalletModalOpen(true)}
-              className="text-white hover:text-purple-400"
+              className="text-white hover:text-purple-400 w-full md:w-auto"
             >
               {t("add_a_wallet")} +
             </button>
 
             <select
-              className="ml-4 px-4 py-2 bg-gray-800 text-white rounded"
+              className="md:ml-4 px-4 py-2 bg-gray-800 text-white rounded w-full md:w-auto"
               value={selectedWallet?.id || ""}
               onChange={(e) => {
                 const wallet = wallets.find((w) => w.id === e.target.value);
@@ -300,7 +298,7 @@ export default function Wallet() {
 
             <Link
               href={`/transactions?walletId=${selectedWallet?.id}`}
-              className="ml-auto text-white font-bold py-2 px-4 rounded-full hover:bg-purple-600 transition"
+              className="md:ml-auto text-white font-bold py-2 px-4 rounded-full hover:bg-purple-600 transition w-full md:w-auto text-center"
             >
               {t("my_transactions")}
             </Link>
@@ -338,11 +336,11 @@ export default function Wallet() {
               const summary = Array.from(summaryMap.entries());
 
               return (
-                <div className="mt-8 p-4 rounded bg-gray-900 text-white">
+                <div className="mt-8 p-2 md:p-4 rounded bg-gray-900 text-white overflow-x-auto">
                   <h2 className="text-xl font-semibold mb-4">
                     {t("holding_by_crypto")}
                   </h2>
-                  <table className="w-full text-sm">
+                  <table className="w-full text-sm min-w-[400px]">
                     <thead>
                       <tr className="text-left border-b border-gray-600">
                         <th className="py-2">Crypto</th>
@@ -392,6 +390,7 @@ export default function Wallet() {
               );
             })()}
 
+          {/* Modals */}
           {isWalletModalOpen && (
             <div
               className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -430,8 +429,8 @@ export default function Wallet() {
                 <TransactionInput
                   walletId={selectedWallet.id}
                   onTransactionAdded={async () => {
-                    await fetchTransactions(); // 🔁 recharge les données
-                    setTransactionModalOpen(false); // ferme la modale
+                    await fetchTransactions();
+                    setTransactionModalOpen(false);
                   }}
                 />
               </div>

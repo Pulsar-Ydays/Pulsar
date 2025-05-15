@@ -18,7 +18,8 @@ import { useEffect, useRef, useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 // Vérification de la présence du token
-const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+const token =
+  typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
 const sidebarItems = [
   { name: "Profil", icon: User, href: token ? "/myProfile" : "/register" },
@@ -60,8 +61,9 @@ export function Sidebar() {
       </button>
       <div
         ref={sidebarRef}
-        className={`fixed top-0 left-0 h-screen z-50 bg-background border-r border-purple-800 pt-16 transform ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } transition-transform duration-300 sm:static sm:translate-x-0 w-64 max-w-[80%] sm:w-72 lg:w-80 z-50 max-h-screen overflow-y-auto flex flex-col`}
+        className={`fixed top-0 left-0 h-screen z-50 bg-black/85 border-r border-purple-800 pt-16 transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } transition-transform duration-300 sm:static sm:translate-x-0 w-64 max-w-[80%] sm:w-72 lg:w-80 z-50 max-h-screen overflow-y-auto flex flex-col`}
       >
         {/* Logo et éléments du menu */}
         <div className="absolute left-4 top-4 flex items-center gap-2">
@@ -99,12 +101,13 @@ export function Sidebar() {
 
         {/* Footer intégré dans la sidebar */}
         <div className="mt-auto py-4">
-          <ul className="flex justify-center gap-6">
-          </ul>
+          <ul className="flex justify-center gap-6"></ul>
           <p className="text-xs text-white text-center mt-4">
             &copy; 2025 Pulsar. All rights reserved.
             <br />
-            <Link href="/data-policy" className="underline">Data Policy</Link>
+            <Link href="/data-policy" className="underline">
+              Data Policy
+            </Link>
           </p>
         </div>
       </div>

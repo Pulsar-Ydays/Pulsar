@@ -17,14 +17,17 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-
 // Schéma de validation
 const registerSchema = z.object({
   username: z.string().min(1, "Nom requis"),
   email: z.string().email("Email invalide"),
-  password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères"),
+  password: z
+    .string()
+    .min(6, "Le mot de passe doit contenir au moins 6 caractères"),
   privacyPolicy: z.literal(true, {
-    errorMap: () => ({ message: "Vous devez accepter les règles de confidentialité." }),
+    errorMap: () => ({
+      message: "Vous devez accepter les règles de confidentialité.",
+    }),
   }),
 });
 
@@ -70,7 +73,6 @@ export default function RegisterForm() {
       console.log("User created:", result);
 
       form.reset();
-      router.push("/");
     } catch (error: any) {
       setErrorMessage(error.message || "Une erreur est survenue.");
     }
@@ -82,7 +84,9 @@ export default function RegisterForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6 flex flex-col items-center w-full max-w-md p-6 bg-[#1A1A1D] bg-opacity-90 shadow-xl rounded-lg"
       >
-        <h1 className="text-3xl font-extrabold text-white">{t("create_account")}</h1>
+        <h1 className="text-3xl font-extrabold text-white">
+          {t("create_account")}
+        </h1>
 
         {/* Username */}
         <FormField
@@ -189,7 +193,9 @@ export default function RegisterForm() {
               <h2 className="text-2xl font-bold text-white mb-4">
                 {t("règles de confidentialité")}
               </h2>
-              <p className="text-gray-300 mb-4">{t("Voici les règles de confidentialité...")}</p>
+              <p className="text-gray-300 mb-4">
+                {t("Voici les règles de confidentialité...")}
+              </p>
               <div className="flex justify-end space-x-4">
                 <Button
                   onClick={() => setShowPrivacyModal(false)}
@@ -211,8 +217,12 @@ export default function RegisterForm() {
         </Button>
 
         {/* Messages */}
-        {successMessage && <p className="text-green-500 mt-4 text-center">{successMessage}</p>}
-        {errorMessage && <p className="text-red-500 mt-4 text-center">{errorMessage}</p>}
+        {successMessage && (
+          <p className="text-green-500 mt-4 text-center">{successMessage}</p>
+        )}
+        {errorMessage && (
+          <p className="text-red-500 mt-4 text-center">{errorMessage}</p>
+        )}
       </form>
     </Form>
   );
