@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 type WalletValueProps = {
   totalValue: string;
@@ -11,10 +12,11 @@ const WalletValue: React.FC<WalletValueProps> = ({
   percentageChange,
   isPositive,
 }) => {
+  const { t } = useTranslation();
   return (
     <section className="mb-8">
       <h2 className="font-mono text-base sm:text-lg font-medium text-gray-400 mb-2 text-center sm:text-left">
-        Total Value
+        {t('total_value')}
       </h2>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div className="text-3xl sm:text-4xl font-bold text-center sm:text-left">
