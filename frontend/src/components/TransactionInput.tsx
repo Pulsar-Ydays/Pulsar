@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 import getCryptoPrice from "@/lib/priceMarket";
 
@@ -38,6 +39,7 @@ export default function TransactionInput({
     defaultValues: { crypto: "BTC", sellOrBuy: "buy", unit: 0 },
   });
 
+   const { t } = useTranslation();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [unitPrice, setUnitPrice] = useState<number | null>(null);
 
@@ -164,7 +166,7 @@ export default function TransactionInput({
           className="space-y-6 flex flex-col items-center w-full max-w-md p-6 bg-[#1A1A1D] bg-opacity-90 shadow-xl rounded-lg"
         >
           <h1 className="text-3xl font-extrabold text-white">
-            Ajouter une transaction
+            {t('add_a_transaction')}
           </h1>
 
           <FormField
@@ -201,8 +203,8 @@ export default function TransactionInput({
                     {...field}
                     className="bg-[#2A0140] text-white p-2 w-full rounded"
                   >
-                    <option value="buy">Buy</option>
-                    <option value="sell">Sell</option>
+                    <option value="buy">{t('buy')}</option>
+                    <option value="sell">{t('sell')}</option>
                   </select>
                 </FormControl>
                 <FormMessage />
@@ -215,7 +217,7 @@ export default function TransactionInput({
             name="unit"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel className="text-gray-300">Quantité</FormLabel>
+                <FormLabel className="text-gray-300">{t('quantity')}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -230,15 +232,15 @@ export default function TransactionInput({
           />
 
           <p className="text-sm text-purple-300 self-start">
-            Prix unitaire actuel : {unitPrice ? unitPrice.toFixed(2) : "0.00"} €
+            {t('current_unit_price')} : {unitPrice ? unitPrice.toFixed(2) : "0.00"} €
           </p>
 
           <p className="text-sm text-gray-200 self-start">
-            Total estimé : {totalPrice.toFixed(2)} €
+            {t('estimated_total')} : {totalPrice.toFixed(2)} €
           </p>
 
           <Button type="submit" className="bg-[#FF4DFF] text-white w-full">
-            Ajouter
+            {t('add')}
           </Button>
         </form>
       </Form>

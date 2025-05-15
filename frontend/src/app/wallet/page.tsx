@@ -163,7 +163,7 @@ export default function Wallet() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            name: walletName || "Nouveau Wallet",
+            name: walletName || t("New_Wallet"),
             transactions: [],
           }),
         }
